@@ -1,7 +1,7 @@
 # OO Application Development
 
-- Academiejaar: 
-- Opleiding: 
-- Klasgroep: 
-- Naam: 
+- Academiejaar: 2024-2025
+- Opleiding: Toegepaste Informatica
+- Klasgroep: 1/2
+- Naam: Xander Van Valckenborgh
 
