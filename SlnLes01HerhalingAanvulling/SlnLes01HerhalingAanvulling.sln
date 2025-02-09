@@ -8,35 +8,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoordComplexiteit", "WoordComplexiteit\WoordComplexiteit.csproj", "{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleComplexiteit", "ConsoleComplexiteit\ConsoleComplexiteit.csproj", "{276A5D9B-A441-4638-B27E-264ACA5D4DBA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfComplexiteit", "WpfComplexiteit\WpfComplexiteit.csproj", "{BDC7AF11-08BC-4018-8943-55F68EECB70A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTaken", "WpfTaken\WpfTaken.csproj", "{77B19FAC-C7A4-417F-8709-792F36B1BD53}"
 EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{276A5D9B-A441-4638-B27E-264ACA5D4DBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{276A5D9B-A441-4638-B27E-264ACA5D4DBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{276A5D9B-A441-4638-B27E-264ACA5D4DBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{276A5D9B-A441-4638-B27E-264ACA5D4DBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDC7AF11-08BC-4018-8943-55F68EECB70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDC7AF11-08BC-4018-8943-55F68EECB70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDC7AF11-08BC-4018-8943-55F68EECB70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDC7AF11-08BC-4018-8943-55F68EECB70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77B19FAC-C7A4-417F-8709-792F36B1BD53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77B19FAC-C7A4-417F-8709-792F36B1BD53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77B19FAC-C7A4-417F-8709-792F36B1BD53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77B19FAC-C7A4-417F-8709-792F36B1BD53}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2057836-93D3-42B2-B417-C462FBD4B347}
-	EndGlobalSection
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Debug|x64.Build.0 = Debug|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Debug|x86.Build.0 = Debug|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Release|x64.ActiveCfg = Release|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Release|x64.Build.0 = Release|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Release|x86.ActiveCfg = Release|Any CPU
-		{2051DB6D-403D-4C93-A4EA-7C5CF75A0D1E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
