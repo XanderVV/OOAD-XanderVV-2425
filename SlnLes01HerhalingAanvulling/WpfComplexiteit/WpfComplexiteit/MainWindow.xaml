@@ -1,37 +1,32 @@
 ﻿<Window x:Class="WpfComplexiteit.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="WPFComplexiteit" Height="200" Width="400">
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+        Title="Complexiteit" 
+        Height="188" Width="451">
+    <Grid Margin="10,0,10,-6" RenderTransformOrigin="0.495,0.494">
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform Angle="-0.343"/>
+                <TranslateTransform X="-0.007" Y="0.015"/>
+            </TransformGroup>
+        </Grid.RenderTransform>
+        <TextBox x:Name="txtwoord" 
+                 HorizontalAlignment="Left" Margin="20,47,0,0" 
+                 VerticalAlignment="Top" 
+                 Width="235" Height="28"/>
 
-        <TextBox x:Name="txtWoord"
-                 Grid.Row="1" Grid.Column="0"
-                 Margin="20,22,22,0"
-                 Height="30"
-                 VerticalAlignment="Top" />
+        <Button x:Name="Analyseerbtn" 
+                Content="ANALYSEER" 
+                HorizontalAlignment="Left" Margin="295,45,0,0" 
+                VerticalAlignment="Top" 
+                Width="98" Height="30" 
+                Click="Button_Click"/>
 
-        <Button x:Name="btnAnalyseer"
-        Grid.Row="1" Grid.Column="1"
-        Content="ANALYSEER"
-        Width="Auto" Height="30"
-        Click="btnAnalyseer_Click"
-        VerticalAlignment="Top"
-        Padding="10,5"
-        Margin="10,22,10,0"/>
-
-
-        <TextBlock x:Name="tblOutput"
-                   Grid.Row="1"
-                   Margin="20,65,-20,-55"
-                   TextWrapping="Wrap"
-                   FontSize="16" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="resultaatTextBlock" 
+                   Margin="20,80,0,0" 
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top" />
     </Grid>
 </Window>

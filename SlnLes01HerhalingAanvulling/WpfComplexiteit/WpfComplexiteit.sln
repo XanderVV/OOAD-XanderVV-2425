@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfComplexiteit", "WpfComplexiteit\WpfComplexiteit.csproj", "{B3D1F826-C173-4EDC-A51D-9C848FB92FBB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfComplexiteit", "WpfComplexiteit\WpfComplexiteit.csproj", "{0E7D2D06-80D7-4523-BCB7-4C14B43CF478}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B3D1F826-C173-4EDC-A51D-9C848FB92FBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3D1F826-C173-4EDC-A51D-9C848FB92FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3D1F826-C173-4EDC-A51D-9C848FB92FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3D1F826-C173-4EDC-A51D-9C848FB92FBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E7D2D06-80D7-4523-BCB7-4C14B43CF478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E7D2D06-80D7-4523-BCB7-4C14B43CF478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E7D2D06-80D7-4523-BCB7-4C14B43CF478}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E7D2D06-80D7-4523-BCB7-4C14B43CF478}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {74C678A7-0821-42A8-AC91-978875F05A46}
+		SolutionGuid = {BD61E3C3-836E-4D66-A713-E2C90A81ADAF}
 	EndGlobalSection
 EndGlobal

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Linq;
 using System.Windows;
 
 namespace WpfComplexiteit
@@ -11,76 +10,45 @@ namespace WpfComplexiteit
             InitializeComponent();
         }
 
-        private void btnAnalyseer_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string invoer = txtWoord.Text;
+            string woord = txtwoord.Text;
+            int aantalKarakters = woord.Length;
+            int aantalLettergrepen = AantalLettergrepen(woord);
+            double complexiteit = BerekenComplexiteit(woord);
 
-            if (string.IsNullOrEmpty(invoer))
-            {
-                tblOutput.Text = string.Empty;
-                return;
-            }
-
-            int aantalKarakters = invoer.Length;
-            int lettergrepen = AantalLettergrepen(invoer);
-            double comp = Complexiteit(invoer);
-
-            string compString = comp.ToString("0.0", CultureInfo.InvariantCulture)
-                                  .Replace('.', ',');
-
-            tblOutput.Text = $@"aantal karakters: {aantalKarakters}
-aantal lettergrepen: {lettergrepen}
-complexiteit: {compString}";
+            resultaatTextBlock.Text = $@"aantal karakters: {aantalKarakters}
+aantal lettergrepen: {aantalLettergrepen}
+complexiteit: {complexiteit:F1}";
         }
-
-
 
         private bool IsKlinker(char c)
         {
-            char lower = char.ToLower(c);
-            return "aeiou".IndexOf(lower) >= 0;
+            return "aeiouAEIOU".Contains(char.ToUpper(c));
         }
 
         private int AantalLettergrepen(string woord)
         {
             int count = 0;
-            bool vorigeWasKlinker = false;
-
-            foreach (char c in woord)
+            for (int i = 0; i < woord.Length; i++)
             {
-                if (IsKlinker(c))
+                if (IsKlinker(woord[i]) && (i == 0 || !IsKlinker(woord[i - 1])))
                 {
-                    if (!vorigeWasKlinker)
-                    {
-                        count++;
-                    }
-                    vorigeWasKlinker = true;
-                }
-                else
-                {
-                    vorigeWasKlinker = false;
+                    count++;
                 }
             }
-
             return count;
         }
 
-        private double Complexiteit(string woord)
+        private double BerekenComplexiteit(string woord)
         {
-            int aantalLetters = woord.Length;
-            int lettergrepen = AantalLettergrepen(woord);
+            double c = (double)woord.Length / 3 + AantalLettergrepen(woord);
 
-            int extra = 0;
-            foreach (char c in woord.ToLower())
-            {
-                if (c == 'x' || c == 'y' || c == 'q')
-                {
-                    extra++;
-                }
-            }
+            if (woord.Contains('x')) c += 1;
+            if (woord.Contains('y')) c += 1;
+            if (woord.Contains('q')) c += 1;
 
-            double raw = (aantalLetters / 3.0) + lettergrepen + extra;
-            return Math.Round(raw, 1);
+            return c;
         }
     }
 }
