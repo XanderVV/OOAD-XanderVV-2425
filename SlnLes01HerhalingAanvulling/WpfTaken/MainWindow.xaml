@@ -1,0 +1,30 @@
+﻿<Window x:Class="WpfTaken.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfTaken"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="465" Width="840">
+    <Grid>
+        <Label Content="Taak: " HorizontalAlignment="Left" Margin="30,75,0,0" VerticalAlignment="Top" Height="30" Width="70" FontSize="15"/>
+        <TextBox x:Name="TaakTextBox" HorizontalAlignment="Left" Margin="115,80,0,0" VerticalAlignment="Top" Width="135" Height="20" FontSize="15" TextChanged="CheckForm"/>
+        <Label Content="prioriteit:" HorizontalAlignment="Left" Margin="35,140,0,0" VerticalAlignment="Top" Width="70" Height="30" FontSize="15"/>
+        <ComboBox x:Name="PrioriteitComboBox" HorizontalAlignment="Left" Margin="115,150,0,0" VerticalAlignment="Top" Width="135" Height="20" SelectionChanged="CheckForm">
+            <ComboBoxItem Content="laag"/>
+            <ComboBoxItem Content="midden"/>
+            <ComboBoxItem Content="hoog"/>
+        </ComboBox>
+        <Label Content="Deadline:" HorizontalAlignment="Left" Margin="35,200,0,0" VerticalAlignment="Top" Width="70" Height="30" FontSize="15"/>
+        <DatePicker x:Name="DeadlineDatePicker" HorizontalAlignment="Left" Margin="105,200,0,0" VerticalAlignment="Top" SelectedDateChanged="CheckForm"/>
+        <Label Content="Door:" HorizontalAlignment="Left" Margin="35,250,0,0" VerticalAlignment="Top" Width="70" Height="30" FontSize="15"/>
+        <RadioButton x:Name="radiobtn" Content="Adam" HorizontalAlignment="Left" Margin="100,265,0,0" VerticalAlignment="Top" Checked="CheckForm"/>
+        <RadioButton x:Name="radiobtn1" Content="Bilal" HorizontalAlignment="Left" Margin="180,265,0,0" VerticalAlignment="Top" Checked="CheckForm"/>
+        <RadioButton x:Name="radiobtn2" Content="chelsey" HorizontalAlignment="Left" Margin="260,265,0,0" VerticalAlignment="Top" Checked="CheckForm"/>
+        <Button x:Name="Toevoegenbtn" Content="Toevoegen" HorizontalAlignment="Left" Margin="210,315,0,0" VerticalAlignment="Top" Height="30" Width="90" FontSize="16" Click="Toevoegen_Click"/>
+        <ListBox x:Name="TakenListBox" HorizontalAlignment="Left" Margin="405,30,0,0" VerticalAlignment="Top" Height="245" Width="415" FontSize="16"/>
+        <Button x:Name="terugzettenbtn" Content="Terugzetten" HorizontalAlignment="Left" Margin="480,320,0,0" VerticalAlignment="Top" Height="30" Width="90" FontSize="16" Click="Terugzetten_Click" />
+        <Button x:Name="verwijderenbtn" Content="Verwijderen" HorizontalAlignment="Left" Margin="630,319,0,0" VerticalAlignment="Top" Height="30" Width="90" FontSize="16" Click="Verwijderen_Click" />
+        <Label x:Name="foutlbl" Content="" HorizontalAlignment="Left" Margin="26,355,0,0" VerticalAlignment="Top" Height="86" Width="424" FontSize="12"/>
+    </Grid>
+</Window>
