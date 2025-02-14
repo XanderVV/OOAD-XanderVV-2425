@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="argentina.png" />
+    <None Remove="finland.png" />
+    <None Remove="japan.png" />
+    <None Remove="marokko.png" />
+    <None Remove="nieuwzeeland.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="argentina.png" />
+    <Resource Include="finland.png" />
+    <Resource Include="japan.png" />
+    <Resource Include="marokko.png" />
+    <Resource Include="nieuwzeeland.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="img\argentina.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="img\finland.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="img\japan.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="img\marokko.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="img\nieuwzeeland.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="sounds\right.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="sounds\wrong.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
