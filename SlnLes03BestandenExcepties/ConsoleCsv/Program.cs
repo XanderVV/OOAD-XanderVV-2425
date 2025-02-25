@@ -30,7 +30,8 @@ namespace WedstrijdenGenerator
                         do
                         {
                             indexSpeler2 = rnd.Next(spelers.Length);
-                        } while (indexSpeler2 == indexSpeler1);
+                        }
+                        while (indexSpeler2 == indexSpeler1);
 
                         string speler1 = spelers[indexSpeler1];
                         string speler2 = spelers[indexSpeler2];
