@@ -1,0 +1,31 @@
+﻿<Window x:Class="WpfVcardEditor.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfVcardEditor"
+        mc:Ignorable="d"
+        Title="About vCard Editor" Height="305" Width="270" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Image Source="/odisee_2019_nachtblauw_rgb.jpg" Grid.ColumnSpan="2" Grid.RowSpan="2" Height="100" ></Image>
+        <Label Content="Gemaakt door:" FontWeight="Bold" Grid.Row="2" VerticalAlignment="Center"></Label>
+        <TextBlock Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" ><Run Language="en-gb" Text="Xander Van Valckenborgh"/></TextBlock>
+        <Label Content="Vak:" HorizontalAlignment="Left"  FontWeight="Bold" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" />
+        <TextBlock Text="OO Application Development" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" ></TextBlock>
+        <Label Content="Academiejaar:" Grid.Row="4" FontWeight="Bold" VerticalAlignment="Center"></Label>
+        <TextBlock Grid.Column="1" Grid.Row="4" VerticalAlignment="Center"><Run Language="en-gb" Text="2024-2025"/></TextBlock>
+        <Button x:Name="Sluitenbtn" Padding="5" Content="SLUITEN" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5" Grid.RowSpan="5" Click="Sluitenbtn_Click_1"></Button>
+    </Grid>
+</Window>

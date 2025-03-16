@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+    <AssetTargetFallback>net472</AssetTargetFallback>
+  </PropertyGroup>
+</Project> 
