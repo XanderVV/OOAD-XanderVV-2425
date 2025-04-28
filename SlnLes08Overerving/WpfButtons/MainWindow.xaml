@@ -1,0 +1,18 @@
+﻿<Window x:Class="WpfButtons.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfButtons"
+        mc:Ignorable="d"
+        Title="Show me the buttons!" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" x:Name="stpCounterButtons" Margin="20" HorizontalAlignment="Left"></StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" x:Name="stpColorButtons" Margin="20" HorizontalAlignment="Left"></StackPanel>
+    </Grid>
+</Window>

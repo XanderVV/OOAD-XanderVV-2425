@@ -1,0 +1,106 @@
+﻿<Window x:Class="WpfZalaStock.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfZalaStock"
+        mc:Ignorable="d"
+        Title="Zala Stock" Height="600" Width="1000">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Logo en titel -->
+        <Image Source="/zala.jpg" Height="80" HorizontalAlignment="Center" Grid.Row="0" Margin="0,0,0,20"/>
+
+        <!-- Hoofdinhoud grid -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Linker kolom: Categorie en beschikbare producten -->
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Text="Categorie:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="CmbCategorie" Width="150" SelectionChanged="CmbCategorie_SelectionChanged"/>
+                </StackPanel>
+                <TextBlock Text="Beschikbare producten:" Margin="0,0,0,5"/>
+                <ListBox x:Name="LstProducten" Height="330" SelectionChanged="LstProducten_SelectionChanged"/>
+            </StackPanel>
+
+            <!-- Middelste kolom: Productdetails en verkoop/retour acties -->
+            <StackPanel Grid.Column="1" Margin="10,0">
+                <TextBlock Text="Productdetails:" Margin="0,0,0,5" FontWeight="Bold"/>
+                <Border x:Name="PnlProductDetails" Margin="0" Height="150" Padding="0">
+                    <StackPanel Margin="0">
+                        <TextBlock x:Name="TxtNaam" Text="Selecteer een product..." Margin="0,0,0,5"/>
+                        <TextBlock x:Name="TxtVoorraad" Text="In Stock: 0" Margin="0"/>
+                    </StackPanel>
+                </Border>
+                
+                <StackPanel Orientation="Horizontal" Margin="0,20,0,10">
+                    <TextBlock Text="Aantal:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="TxtAantal" Width="80" TextAlignment="Right" Text="1"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    <Button x:Name="BtnVerkopen" Content="Verkopen" Width="100" Height="30" 
+                            Background="#FF5722" Foreground="White" Margin="0,0,10,0" Click="BtnVerkopen_Click" BorderThickness="0">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="#FF5722"/>
+                                        <Setter Property="Opacity" Value="0.7"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button x:Name="BtnRetourneren" Content="Retourneren" Width="100" Height="30"
+                            Background="#FF5722" Foreground="White" Click="BtnRetourneren_Click" BorderThickness="0">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="#FF5722"/>
+                                        <Setter Property="Opacity" Value="0.7"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Rechter kolom: Verkochte en geretourneerde items -->
+            <Grid Grid.Column="2" Margin="10,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="Verkocht:" Grid.Row="0" Margin="0,0,0,5"/>
+                <ListView x:Name="LstVerkocht" Grid.Row="1" Background="Transparent" BorderBrush="OrangeRed" BorderThickness="1" Margin="0,0,0,10"/>
+                
+                <TextBlock Text="Geretourneerd:" Grid.Row="2" Margin="0,10,0,5"/>
+                <ListView x:Name="LstGeretourneerd" Grid.Row="3" Background="Transparent" BorderBrush="OrangeRed" BorderThickness="1"/>
+            </Grid>
+        </Grid>
+
+        <!-- Totalen -->
+        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <TextBlock x:Name="TxtTotaalVerkocht" Text="Totaalbedrag verkopen: € 0,00" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="TxtTotaalRetours" Text="Totaalbedrag retours: -€ 0,00" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="TxtTotaalBedrag" Text="Totaalbedrag: € 0,00" HorizontalAlignment="Right" FontWeight="Bold"/>
+        </StackPanel>
+    </Grid>
+</Window>
