@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <!-- Logo en titel -->
-        <Image Source="/zala.jpg" Height="80" HorizontalAlignment="Center" Grid.Row="0" Margin="0,0,0,20"/>
+        <Image Grid.Row="0" Source="pack://application:,,,/zala.jpg" Height="100" HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
         <!-- Hoofdinhoud grid -->
         <Grid Grid.Row="1">
