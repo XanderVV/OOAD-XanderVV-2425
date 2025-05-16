@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Volg de principes uit "14. SQL databanken" @https://rogiervdl.github.io/CS-course/14_sql_databanken.html voor het werken met SQL databanken in C#.

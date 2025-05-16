@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Houd je strikt aan de vereiste driedelige structuur - class library, admin WPF applicatie en company WPF applicatie.

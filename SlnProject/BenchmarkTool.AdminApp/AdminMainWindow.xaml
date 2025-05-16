@@ -1,0 +1,54 @@
+﻿<Window x:Class="BenchmarkTool.AdminApp.AdminMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BenchmarkTool.AdminApp"
+        mc:Ignorable="d"
+        Title="BenchmarkTool Beheerder" Height="600" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid Background="{StaticResource LightGrayColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Topmenu -->
+        <Menu Grid.Row="0" Background="{StaticResource LightGrayColor}" FontSize="14">
+            <MenuItem Header="Bestand" Padding="10,5">
+                <MenuItem x:Name="mnuLogout" Header="Uitloggen" Click="mnuLogout_Click" Padding="10,5">
+                    <MenuItem.Icon>
+                        <TextBlock Text="🔓" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem x:Name="mnuAfsluiten" Header="Afsluiten" Click="mnuAfsluiten_Click" Padding="10,5">
+                    <MenuItem.Icon>
+                        <TextBlock Text="❌" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Navigatie" Padding="10,5">
+                <MenuItem x:Name="mnuDashboard" Header="Dashboard" Click="mnuDashboard_Click" Padding="10,5">
+                    <MenuItem.Icon>
+                        <TextBlock Text="🏠" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="mnuBedrijvenBeheer" Header="Bedrijvenbeheer" Click="mnuBedrijvenBeheer_Click" Padding="10,5">
+                    <MenuItem.Icon>
+                        <TextBlock Text="🏢" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="mnuRegistratieBeheer" Header="Registratieverzoeken" Click="mnuRegistratieBeheer_Click" Padding="10,5">
+                    <MenuItem.Icon>
+                        <TextBlock Text="📋" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        
+        <Border Grid.Row="1">
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="White"/>
+        </Border>
+    </Grid>
+</Window>

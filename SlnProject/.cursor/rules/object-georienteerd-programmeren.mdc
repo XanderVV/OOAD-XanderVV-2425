@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Gebruik consistent classes en properties zoals beschreven in "10. classes en properties" @https://rogiervdl.github.io/CS-course/10_classes_properties.html, "11. Static en enum" @https://rogiervdl.github.io/CS-course/11_static_enum.html en "12. Overerving" @https://rogiervdl.github.io/CS-course/12_overerving.html.

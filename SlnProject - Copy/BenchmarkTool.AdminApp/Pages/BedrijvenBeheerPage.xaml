@@ -1,0 +1,67 @@
+<Page x:Class="BenchmarkTool.AdminApp.Pages.BedrijvenBeheerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BenchmarkTool.AdminApp.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="BedrijvenBeheerPage">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2c3e50" Padding="20,10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Bedrijvenbeheer" Foreground="White" FontSize="22" VerticalAlignment="Center"/>
+                <Button x:Name="btnTerug" Content="Terug naar Dashboard" Margin="20,0,0,0" Padding="10,5" Click="btnTerug_Click"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Bedrijvenlijst -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Text="Geregistreerde Bedrijven" FontSize="18" Margin="0,0,0,10"/>
+            
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="spBedrijvenLijst">
+                    <!-- Header -->
+                    <Border Background="#f0f0f0" Padding="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Text="ID" FontWeight="Bold"/>
+                            <TextBlock Grid.Column="1" Text="Naam" FontWeight="Bold"/>
+                            <TextBlock Grid.Column="2" Text="Status" FontWeight="Bold"/>
+                            <TextBlock Grid.Column="3" Text="NACE-code" FontWeight="Bold"/>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Bedrijven items worden hier programmatisch toegevoegd -->
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        
+        <!-- CRUD knoppen -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20">
+            <Button x:Name="btnToevoegen" Content="Toevoegen" Width="100" Margin="0,0,10,0" Click="btnToevoegen_Click"/>
+            <Button x:Name="btnWijzigen" Content="Wijzigen" Width="100" Margin="0,0,10,0" Click="btnWijzigen_Click"/>
+            <Button x:Name="btnVerwijderen" Content="Verwijderen" Width="100" Click="btnVerwijderen_Click"/>
+        </StackPanel>
+    </Grid>
+</Page> 

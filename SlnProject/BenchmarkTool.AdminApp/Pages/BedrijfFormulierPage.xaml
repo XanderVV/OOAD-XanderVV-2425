@@ -1,0 +1,156 @@
+<Page x:Class="BenchmarkTool.AdminApp.Pages.BedrijfFormulierPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BenchmarkTool.AdminApp.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="BedrijfFormulierPage">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" Padding="20,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" x:Name="txtHeader" Text="Bedrijf Toevoegen" Style="{StaticResource HeaderTextStyle}"/>
+                <Button Grid.Column="2" x:Name="btnTerug" Style="{StaticResource StandardButtonStyle}" 
+                        Click="btnTerug_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="◀️" Margin="0,0,8,0"/>
+                        <TextBlock Text="Terug naar Bedrijvenbeheer"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+        
+        <!-- Formulier -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid Margin="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                
+                <!-- Linkerkolom: Bedrijfsgegevens -->
+                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                    <TextBlock Text="Bedrijfsgegevens" Style="{StaticResource SubHeaderTextStyle}"/>
+                    
+                    <TextBlock Text="Naam:" Style="{StaticResource LabelTextStyle}"/>
+                    <TextBox x:Name="txtName" Style="{StaticResource StandardTextBoxStyle}" Margin="0,0,0,15"/>
+                    
+                    <TextBlock Text="Contact persoon:" Style="{StaticResource LabelTextStyle}"/>
+                    <TextBox x:Name="txtContact" Style="{StaticResource StandardTextBoxStyle}" Margin="0,0,0,15"/>
+                    
+                    <TextBlock Text="E-mail:" Style="{StaticResource LabelTextStyle}"/>
+                    <TextBox x:Name="txtEmail" Style="{StaticResource StandardTextBoxStyle}" Margin="0,0,0,15"/>
+                    
+                    <TextBlock Text="Adres:" Style="{StaticResource LabelTextStyle}"/>
+                    <TextBox x:Name="txtAddress" Style="{StaticResource StandardTextBoxStyle}" Margin="0,0,0,15"/>
+                    
+                    <TextBlock Text="Postcode:" Style="{StaticResource LabelTextStyle}"/>
+                    <TextBox x:Name="txtZip" Style="{StaticResource StandardTextBoxStyle}" Margin="0,0,0,15"/>
+                    
+                    <TextBlock Text="Stad:" Style="{StaticResource LabelTextStyle}"/>
+                    <TextBox x:Name="txtCity" Style="{StaticResource StandardTextBoxStyle}" Margin="0,0,0,15"/>
+                    
+                    <TextBlock Text="Land:" Style="{StaticResource LabelTextStyle}"/>
+                    <TextBox x:Name="txtCountry" Style="{StaticResource StandardTextBoxStyle}" Margin="0,0,0,15"/>
+                    
+                    <TextBlock Text="Telefoon:" Style="{StaticResource LabelTextStyle}"/>
+                    <TextBox x:Name="txtPhone" Style="{StaticResource StandardTextBoxStyle}" Margin="0,0,0,15"/>
+                </StackPanel>
+                
+                <!-- Rechterkolom: Inloggegevens, status, logo -->
+                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                    <TextBlock Text="Inloggegevens" Style="{StaticResource SubHeaderTextStyle}"/>
+                    
+                    <TextBlock Text="Gebruikersnaam (Login):" Style="{StaticResource LabelTextStyle}"/>
+                    <TextBox x:Name="txtLogin" Style="{StaticResource StandardTextBoxStyle}" Margin="0,0,0,15"/>
+                    
+                    <TextBlock Text="Wachtwoord:" Style="{StaticResource LabelTextStyle}" x:Name="lblPassword"/>
+                    <PasswordBox x:Name="txtPassword" Style="{StaticResource StandardPasswordBoxStyle}" Margin="0,0,0,15"/>
+                    
+                    <TextBlock Text="Status:" Style="{StaticResource LabelTextStyle}"/>
+                    <ComboBox x:Name="cboStatus" Style="{StaticResource StandardComboBoxStyle}" Margin="0,0,0,15">
+                        <ComboBoxItem Content="Actief" Tag="Active"/>
+                        <ComboBoxItem Content="In behandeling" Tag="Pending"/>
+                        <ComboBoxItem Content="Gedeactiveerd" Tag="Inactive"/>
+                    </ComboBox>
+                    
+                    <TextBlock Text="NACE-code:" Style="{StaticResource LabelTextStyle}"/>
+                    <ComboBox x:Name="cboNacecode" Style="{StaticResource StandardComboBoxStyle}" Margin="0,0,0,15">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Code}"/>
+                                    <Run Text=" - "/>
+                                    <Run Text="{Binding Text}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    
+                    <TextBlock Text="Taal:" Style="{StaticResource LabelTextStyle}"/>
+                    <ComboBox x:Name="cboLanguage" Style="{StaticResource StandardComboBoxStyle}" Margin="0,0,0,15">
+                        <ComboBoxItem Content="Nederlands" Tag="nl"/>
+                        <ComboBoxItem Content="Engels" Tag="en"/>
+                        <ComboBoxItem Content="Frans" Tag="fr"/>
+                    </ComboBox>
+                    
+                    <TextBlock Text="Logo:" Style="{StaticResource LabelTextStyle}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <Button x:Name="btnUploadLogo" Style="{StaticResource StandardButtonStyle}" 
+                                Click="btnUploadLogo_Click" Margin="0,0,10,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📷" Margin="0,0,5,0"/>
+                                <TextBlock Text="Logo Uploaden"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnVerwijderLogo" Style="{StaticResource DangerButtonStyle}" 
+                                Click="btnVerwijderLogo_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🗑️" Margin="0,0,5,0"/>
+                                <TextBlock Text="Logo Verwijderen"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <Border BorderBrush="{StaticResource MediumGrayColor}" BorderThickness="1" 
+                            Width="150" Height="150" HorizontalAlignment="Left" Margin="0,0,0,15" 
+                            CornerRadius="3">
+                        <Image x:Name="imgLogo" Stretch="Uniform" Margin="5"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+        
+        <!-- Knoppen -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20">
+            <Button x:Name="btnOpslaan" Style="{StaticResource PrimaryButtonStyle}" 
+                    Margin="0,0,10,0" Click="btnOpslaan_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="💾" Margin="0,0,5,0"/>
+                    <TextBlock Text="Opslaan"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnAnnuleren" Style="{StaticResource StandardButtonStyle}" 
+                    Click="btnAnnuleren_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="✖️" Margin="0,0,5,0"/>
+                    <TextBlock Text="Annuleren"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page> 

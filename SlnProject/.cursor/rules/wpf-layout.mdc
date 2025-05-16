@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+ Gebruik StackPanel, Grid en andere layout containers correct zoals beschreven in "08. WPF layout" @https://rogiervdl.github.io/CS-course/08_wpflayout.html.

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Width="24" Height="24">
+    <Path Fill="#0078D7" Data="M21,15h2v2h-2V15z M21,11h2v2h-2V11z M21,7h2v2h-2V7z M3,15h2v2H3V15z M3,11h2v2H3V11z M3,7h2v2H3V7z M9,7h2v2H9V7z M9,15h2v2H9V15z M9,11h2v2H9V11z M15,15h2v2h-2V15z M15,11h2v2h-2V11z M15,7h2v2h-2V7z M21,3h-4v2h4V3z M17,3h-4v2h4V3z M13,3H9v2h4V3z M9,3H5v2h4V3z M5,3H1v18h4V3z M1,3v18h22V3H1z"></Path>
+</Canvas> 

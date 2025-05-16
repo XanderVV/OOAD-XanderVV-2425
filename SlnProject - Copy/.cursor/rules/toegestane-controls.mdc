@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Gebruik alleen controls uit "07. WPF Controls" @https://rogiervdl.github.io/CS-course/07_wpfcontrols.html. Geen DataGrid, ListView of andere niet-behandelde controls.

@@ -1,0 +1,1 @@
+bekijk de 2 besatnden in de map @plan namelijk @prd.md en @todo.md en begin met de eerste feature toe te voegen aan dit project namelijk 0.1 [ ] **Database Opzetten:** maak gebruik van al de cursorrules 

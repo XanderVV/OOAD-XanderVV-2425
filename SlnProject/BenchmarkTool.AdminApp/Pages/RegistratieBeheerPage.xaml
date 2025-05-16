@@ -1,0 +1,112 @@
+<Page x:Class="BenchmarkTool.AdminApp.Pages.RegistratieBeheerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BenchmarkTool.AdminApp.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="RegistratieBeheerPage">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" Padding="20,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Text="Registratieverzoeken Beheren" Style="{StaticResource HeaderTextStyle}"/>
+                <Button Grid.Column="2" x:Name="btnTerug" Style="{StaticResource StandardButtonStyle}" 
+                        Click="btnTerug_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🏠" Margin="0,0,8,0"/>
+                        <TextBlock Text="Terug naar Dashboard"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+        
+        <!-- Registraties lijst -->
+        <Border Grid.Row="1" Margin="20" BorderBrush="{StaticResource MediumGrayColor}" 
+                BorderThickness="1" CornerRadius="3">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Text="Openstaande Registratieverzoeken" Style="{StaticResource SubHeaderTextStyle}"/>
+                
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="spRegistratieLijst">
+                        <!-- Header -->
+                        <Border Background="{StaticResource LightGrayColor}" Padding="10" Margin="0,0,0,5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="0" Text="ID" FontWeight="Bold" Foreground="{StaticResource TextColor}"/>
+                                <TextBlock Grid.Column="1" Text="Bedrijfsnaam" FontWeight="Bold" Foreground="{StaticResource TextColor}"/>
+                                <TextBlock Grid.Column="2" Text="Contact" FontWeight="Bold" Foreground="{StaticResource TextColor}"/>
+                                <TextBlock Grid.Column="3" Text="Registratiedatum" FontWeight="Bold" Foreground="{StaticResource TextColor}"/>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- Registratie items worden hier programmatisch toegevoegd -->
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+        
+        <!-- Actieknoppen -->
+        <Grid Grid.Row="2" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Details van geselecteerd verzoek -->
+            <Border Grid.Column="0" x:Name="spGeselecteerdeDetails" Visibility="Collapsed" 
+                    Background="{StaticResource LightGrayColor}" BorderBrush="{StaticResource MediumGrayColor}" 
+                    BorderThickness="1" CornerRadius="3" Padding="15">
+                <StackPanel>
+                    <TextBlock x:Name="txtGeselecteerdBedrijf" FontWeight="Bold" FontSize="16" Foreground="{StaticResource TextColor}"/>
+                    <TextBlock x:Name="txtGeselecteerdContact" Margin="0,5,0,0" Foreground="{StaticResource TextColor}"/>
+                    <TextBlock x:Name="txtGeselecteerdEmail" Margin="0,5,0,0" Foreground="{StaticResource TextColor}"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Knoppen -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button x:Name="btnGoedkeuren" Style="{StaticResource StandardButtonStyle}" 
+                        Margin="0,0,10,0" Click="btnGoedkeuren_Click" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="✅" Margin="0,0,5,0"/>
+                        <TextBlock Text="Goedkeuren"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnAfwijzen" Style="{StaticResource DangerButtonStyle}" 
+                        Click="btnAfwijzen_Click" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="❌" Margin="0,0,5,0"/>
+                        <TextBlock Text="Afwijzen"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page> 

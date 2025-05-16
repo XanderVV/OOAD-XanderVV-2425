@@ -1,0 +1,44 @@
+<Page x:Class="BenchmarkTool.CompanyApp.Pages.CompanyLoginPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BenchmarkTool.CompanyApp.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="CompanyLoginPage">
+
+    <Grid Background="White">
+        <Border Width="340" VerticalAlignment="Center" Background="White" BorderBrush="{StaticResource MediumGrayColor}" 
+                BorderThickness="1" CornerRadius="5" Padding="20">
+            <StackPanel>
+                <TextBlock Text="BenchmarkTool Bedrijfslogin" HorizontalAlignment="Center" 
+                           Style="{StaticResource SubHeaderTextStyle}" FontSize="22" Margin="0,0,0,30"/>
+                
+                <Border Background="{StaticResource PrimaryColor}" Height="4" Margin="50,0,50,30"/>
+                
+                <TextBlock Text="Gebruikersnaam:" Style="{StaticResource LabelTextStyle}"/>
+                <TextBox x:Name="txtUsername" Style="{StaticResource StandardTextBoxStyle}" Margin="0,0,0,15"/>
+                
+                <TextBlock Text="Wachtwoord:" Style="{StaticResource LabelTextStyle}"/>
+                <PasswordBox x:Name="pwdPassword" Style="{StaticResource StandardPasswordBoxStyle}" 
+                             Margin="0,0,0,25" KeyDown="pwdPassword_KeyDown"/>
+                
+                <Button x:Name="btnLogin" Content="Inloggen" Style="{StaticResource PrimaryButtonStyle}" 
+                        Width="150" Height="35" Click="btnLogin_Click" HorizontalAlignment="Center"/>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                    <ProgressBar x:Name="prgLogin" Width="120" Height="10" Visibility="Collapsed" 
+                                 IsIndeterminate="True" Margin="0,0,10,0" Foreground="{StaticResource SecondaryColor}"/>
+                    <TextBlock x:Name="txtError" Foreground="{StaticResource AccentColor}" 
+                               TextWrapping="Wrap" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                </StackPanel>
+                
+                <TextBlock Text="Nog geen account?" Style="{StaticResource BodyTextStyle}" 
+                           HorizontalAlignment="Center" Margin="0,20,0,5"/>
+                <Button x:Name="btnRegistreer" Content="Registreer uw bedrijf" Style="{StaticResource StandardButtonStyle}" 
+                        Click="btnRegistreer_Click" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page> 

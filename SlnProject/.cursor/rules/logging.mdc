@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Implementeer goede foutafhandeling met try-catch blokken zoals beschreven in "06. .NET Classes" @https://rogiervdl.github.io/CS-course/06_dotnetclasses.html.
