@@ -27,12 +27,12 @@ namespace BenchmarkTool.CompanyApp.Pages
             _bedrijfService = new BedrijfService();
         }
 
-        private void btnTerug_Click(object sender, RoutedEventArgs e)
+        private void BtnTerug_Click(object sender, RoutedEventArgs e)
         {
             _hoofdVenster.NavigeerNaar(new CompanyLoginPage());
         }
 
-        private void btnKiesLogo_Click(object sender, RoutedEventArgs e)
+        private void BtnKiesLogo_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -55,7 +55,7 @@ namespace BenchmarkTool.CompanyApp.Pages
             }
         }
 
-        private async void btnRegistreer_Click(object sender, RoutedEventArgs e)
+        private async void BtnRegistreer_Click(object sender, RoutedEventArgs e)
         {
             // Validatie
             if (!ValideerFormulier())

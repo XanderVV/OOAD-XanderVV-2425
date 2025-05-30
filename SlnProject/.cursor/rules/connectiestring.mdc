@@ -1,6 +1,0 @@
----
-description: 
-globs: 
-alwaysApply: true
----
-Gebruik exact de gespecificeerde connectiestring voor de databank zoals beschreven in "14. SQL databanken" @https://rogiervdl.github.io/CS-course/14_sql_databanken.html.

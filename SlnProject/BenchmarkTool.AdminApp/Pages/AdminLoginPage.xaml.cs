@@ -22,7 +22,7 @@ namespace BenchmarkTool.AdminApp.Pages
             Loaded += (s, e) => { txtUsername.Focus(); };
         }
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
             string gebruikersnaam = txtUsername.Text;
             string wachtwoord = pwdPassword.Password;
@@ -30,7 +30,7 @@ namespace BenchmarkTool.AdminApp.Pages
             // Valideer de invoer
             if (string.IsNullOrWhiteSpace(gebruikersnaam) || string.IsNullOrWhiteSpace(wachtwoord))
             {
-                txtError.Text = "Vul alstublieft zowel gebruikersnaam als wachtwoord in.";
+                lblError.Text = "Vul alstublieft zowel gebruikersnaam als wachtwoord in.";
                 return;
             }
 
@@ -41,7 +41,7 @@ namespace BenchmarkTool.AdminApp.Pages
                 txtUsername.IsEnabled = false;
                 pwdPassword.IsEnabled = false;
                 prgLogin.Visibility = Visibility.Visible;
-                txtError.Text = "Bezig met inloggen...";
+                lblError.Text = "Bezig met inloggen...";
                 
                 // Controleer admin credentials
                 bool isValidAdmin = _authService.ValideerAdminCredentials(gebruikersnaam, wachtwoord);
@@ -49,10 +49,10 @@ namespace BenchmarkTool.AdminApp.Pages
                 if (isValidAdmin)
                 {
                     // Wis eventuele foutmeldingen
-                    txtError.Text = string.Empty;
+                    lblError.Text = string.Empty;
                     
                     // Gebruik de centraal gedefinieerde navigatiemethode in het hoofdvenster
-                    var mainWindow = (Window.GetWindow(this) as AdminMainWindow);
+                    var mainWindow = Window.GetWindow(this) as AdminMainWindow;
                     if (mainWindow != null)
                     {
                         mainWindow.NavigeerNaarDashboard();
@@ -72,7 +72,7 @@ namespace BenchmarkTool.AdminApp.Pages
                     prgLogin.Visibility = Visibility.Collapsed;
                     
                     // Toon foutmelding
-                    txtError.Text = "Ongeldige inloggegevens. Probeer het opnieuw.";
+                    lblError.Text = "Ongeldige inloggegevens. Probeer het opnieuw.";
                     pwdPassword.Password = string.Empty;
                     pwdPassword.Focus();
                 }
@@ -86,15 +86,15 @@ namespace BenchmarkTool.AdminApp.Pages
                 prgLogin.Visibility = Visibility.Collapsed;
                 
                 // Toon foutmelding
-                txtError.Text = $"Er is een fout opgetreden: {ex.Message}";
+                lblError.Text = $"Er is een fout opgetreden: {ex.Message}";
             }
         }
         
-        private void pwdPassword_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void PwdPassword_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Enter)
             {
-                btnLogin_Click(sender, e);
+                BtnLogin_Click(sender, e);
             }
         }
     }

@@ -124,8 +124,8 @@ namespace BenchmarkTool.CompanyApp.Pages
                 
                 // Forceer UI update
                 System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(
-                    System.Windows.Threading.DispatcherPriority.Background,
-                    new Action(delegate { }));
+                    () => { }, 
+                    System.Windows.Threading.DispatcherPriority.Background);
                 
                 try
                 {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Configuration;
 using Microsoft.Data.SqlClient;
 
@@ -11,11 +10,14 @@ namespace BenchmarkTool.ClassLibrary.Data
     /// </summary>
     public class DatabaseHelper
     {
+        // Definieer een delegate type als alternatief voor Action<SqlDataReader>
+        public delegate void SqlReaderHandler(SqlDataReader reader);
+        
         protected string ConnectionString { get; set; }
         private readonly string _connectionString;
 
         /// <summary>
-        /// Constructor die de connectiestring uit de configuratie ophaalt
+        /// Initializes a new instance of the <see cref="DatabaseHelper"/> class that retrieves the connection string from configuration.
         /// </summary>
         public DatabaseHelper()
         {
@@ -24,7 +26,7 @@ namespace BenchmarkTool.ClassLibrary.Data
         }
 
         /// <summary>
-        /// Constructor met expliciete connectiestring
+        /// Initializes a new instance of the <see cref="DatabaseHelper"/> class with an explicit connection string.
         /// </summary>
         /// <param name="connectionString">De te gebruiken connectiestring</param>
         public DatabaseHelper(string connectionString)
@@ -77,7 +79,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                 string errorMessage = $"Database verbindingsfout: {sqlEx.Message}, ErrorCode: {sqlEx.Number}";
                 
                 // Voeg extra informatie toe voor specifieke foutcodes
-                switch(sqlEx.Number)
+                switch (sqlEx.Number)
                 {
                     case 4060: // Kan database niet openen
                         errorMessage += ". De opgegeven database bestaat mogelijk niet.";
@@ -109,14 +111,50 @@ namespace BenchmarkTool.ClassLibrary.Data
         }
 
         /// <summary>
-        /// Voert een SQL query uit die een DataTable teruggeeft
+        /// Voert een SQL query uit en verwerkt de resultaten met een callback functie
         /// </summary>
         /// <param name="query">De SQL query</param>
+        /// <param name="handleReader">Een delegate die de SqlDataReader verwerkt</param>
         /// <param name="parameters">De parameters voor de query</param>
-        /// <returns>Een DataTable met de resultaten</returns>
-        public virtual DataTable ExecuteDataTable(string query, params SqlParameter[] parameters)
+        public virtual void ExecuteReader(string query, SqlReaderHandler handleReader, params SqlParameter[] parameters)
         {
-            DataTable dataTable = new DataTable();
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        if (parameters != null)
+                        {
+                            command.Parameters.AddRange(parameters);
+                        }
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            handleReader(reader);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log de fout
+                System.Diagnostics.Debug.WriteLine($"Database fout: {ex.Message}");
+                throw new Exception("Er is een fout opgetreden bij het uitvoeren van de query.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Voert een SQL query uit en retourneert een lijst van objecten van type T
+        /// </summary>
+        /// <typeparam name="T">Het type object</typeparam>
+        /// <param name="query">De SQL query</param>
+        /// <param name="map">Functie die een SqlDataReader omzet naar een object van type T</param>
+        /// <param name="parameters">De parameters voor de query</param>
+        /// <returns>Een lijst van objecten van type T</returns>
+        public virtual List<T> ExecuteList<T>(string query, Func<SqlDataReader, T> map, params SqlParameter[] parameters)
+        {
+            List<T> list = new List<T>();
 
             try
             {
@@ -129,9 +167,12 @@ namespace BenchmarkTool.ClassLibrary.Data
                             command.Parameters.AddRange(parameters);
                         }
 
-                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            adapter.Fill(dataTable);
+                            while (reader.Read())
+                            {
+                                list.Add(map(reader));
+                            }
                         }
                     }
                 }
@@ -143,7 +184,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                 throw new Exception("Er is een fout opgetreden bij het uitvoeren van de query.", ex);
             }
 
-            return dataTable;
+            return list;
         }
 
         /// <summary>
@@ -209,24 +250,43 @@ namespace BenchmarkTool.ClassLibrary.Data
         }
 
         /// <summary>
-        /// Voert een SQL query uit en retourneert een lijst van objecten van type T
+        /// Voert een SQL query uit en retourneert een lijst van dynamische objecten
         /// </summary>
-        /// <typeparam name="T">Het type object</typeparam>
         /// <param name="query">De SQL query</param>
-        /// <param name="map">Functie die een DataRow omzet naar een object van type T</param>
         /// <param name="parameters">De parameters voor de query</param>
-        /// <returns>Een lijst van objecten van type T</returns>
-        public virtual List<T> ExecuteList<T>(string query, Func<DataRow, T> map, params SqlParameter[] parameters)
+        /// <returns>Een lijst van dynamische objecten met de resultaten</returns>
+        public virtual List<Dictionary<string, object>> ExecuteQuery(string query, params SqlParameter[] parameters)
         {
-            List<T> list = new List<T>();
+            List<Dictionary<string, object>> results = new List<Dictionary<string, object>>();
 
             try
             {
-                DataTable dataTable = ExecuteDataTable(query, parameters);
-
-                foreach (DataRow row in dataTable.Rows)
+                using (SqlConnection connection = GetConnection())
                 {
-                    list.Add(map(row));
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        if (parameters != null)
+                        {
+                            command.Parameters.AddRange(parameters);
+                        }
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Dictionary<string, object> row = new Dictionary<string, object>();
+                                
+                                for (int i = 0; i < reader.FieldCount; i++)
+                                {
+                                    string columnName = reader.GetName(i);
+                                    object value = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                                    row[columnName] = value;
+                                }
+                                
+                                results.Add(row);
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -236,7 +296,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                 throw new Exception("Er is een fout opgetreden bij het uitvoeren van de query.", ex);
             }
 
-            return list;
+            return results;
         }
     }
 } 

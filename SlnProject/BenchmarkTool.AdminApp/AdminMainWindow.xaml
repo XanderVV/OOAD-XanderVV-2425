@@ -16,30 +16,30 @@
         <!-- Topmenu -->
         <Menu Grid.Row="0" Background="{StaticResource LightGrayColor}" FontSize="14">
             <MenuItem Header="Bestand" Padding="10,5">
-                <MenuItem x:Name="mnuLogout" Header="Uitloggen" Click="mnuLogout_Click" Padding="10,5">
+                <MenuItem x:Name="mnuLogout" Header="Uitloggen" Click="MnuLogout_Click" Padding="10,5">
                     <MenuItem.Icon>
                         <TextBlock Text="🔓" FontSize="14"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem x:Name="mnuAfsluiten" Header="Afsluiten" Click="mnuAfsluiten_Click" Padding="10,5">
+                <MenuItem x:Name="mnuAfsluiten" Header="Afsluiten" Click="MnuAfsluiten_Click" Padding="10,5">
                     <MenuItem.Icon>
                         <TextBlock Text="❌" FontSize="14"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Navigatie" Padding="10,5">
-                <MenuItem x:Name="mnuDashboard" Header="Dashboard" Click="mnuDashboard_Click" Padding="10,5">
+                <MenuItem x:Name="mnuDashboard" Header="Dashboard" Click="MnuDashboard_Click" Padding="10,5">
                     <MenuItem.Icon>
                         <TextBlock Text="🏠" FontSize="14"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="mnuBedrijvenBeheer" Header="Bedrijvenbeheer" Click="mnuBedrijvenBeheer_Click" Padding="10,5">
+                <MenuItem x:Name="mnuBedrijvenBeheer" Header="Bedrijvenbeheer" Click="MnuBedrijvenBeheer_Click" Padding="10,5">
                     <MenuItem.Icon>
                         <TextBlock Text="🏢" FontSize="14"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="mnuRegistratieBeheer" Header="Registratieverzoeken" Click="mnuRegistratieBeheer_Click" Padding="10,5">
+                <MenuItem x:Name="mnuRegistratieBeheer" Header="Registratieverzoeken" Click="MnuRegistratieBeheer_Click" Padding="10,5">
                     <MenuItem.Icon>
                         <TextBlock Text="📋" FontSize="14"/>
                     </MenuItem.Icon>

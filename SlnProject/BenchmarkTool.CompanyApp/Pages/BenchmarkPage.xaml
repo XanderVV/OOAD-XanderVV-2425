@@ -108,13 +108,13 @@
                             <Button x:Name="btnGenereerBenchmark" Content="Genereer Benchmark" 
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     HorizontalAlignment="Stretch" Padding="0,8"
-                                    Click="btnToepassen_Click" Margin="0,0,0,8"/>
+                                    Click="BtnToepassen_Click" Margin="0,0,0,8"/>
                             
                             <!-- Terug naar Dashboard -->
                             <Button x:Name="btnTerugNaarDashboard" Content="Terug naar Dashboard" 
                                     Style="{StaticResource StandardButtonStyle}" 
                                     HorizontalAlignment="Stretch" Padding="0,8"
-                                    Click="btnTerug_Click"/>
+                                    Click="BtnTerug_Click"/>
                     </StackPanel>
                     </ScrollViewer>
                 </Border>

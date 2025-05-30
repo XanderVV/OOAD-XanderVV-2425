@@ -1,12 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Collections.Generic;
-using Microsoft.Win32;
 using BenchmarkTool.ClassLibrary.Data;
 using BenchmarkTool.ClassLibrary.Models;
+using Microsoft.Win32;
 
 namespace BenchmarkTool.AdminApp.Pages
 {
@@ -88,19 +88,29 @@ namespace BenchmarkTool.AdminApp.Pages
             {
                 // Haal alle NACE-codes op
                 var naceCodes = _databaseRepository.GetAllNacecodes();
-                cboNacecode.ItemsSource = naceCodes;
                 
-                // Als we in edit mode zijn, selecteer de juiste NACE-code
-                if (_isEditMode && !string.IsNullOrEmpty(_bedrijf.NacecodeCode))
+                // Maak de ComboBox leeg
+                cboNacecode.Items.Clear();
+                
+                // Voeg elke NACE-code toe als ComboBoxItem
+                foreach (var naceCode in naceCodes)
                 {
-                    foreach (var naceCode in naceCodes)
+                    ComboBoxItem item = new ComboBoxItem();
+                    item.Content = naceCode.Code + " - " + naceCode.Text;
+                    item.Tag = naceCode.Code;
+                    cboNacecode.Items.Add(item);
+                    
+                    // Als we in edit mode zijn, selecteer de juiste NACE-code
+                    if (_isEditMode && naceCode.Code == _bedrijf.NacecodeCode)
                     {
-                        if (naceCode.Code == _bedrijf.NacecodeCode)
-                        {
-                            cboNacecode.SelectedItem = naceCode;
-                            break;
-                        }
+                        cboNacecode.SelectedItem = item;
                     }
+                }
+                
+                // Als er geen items geselecteerd zijn en er zijn items beschikbaar, selecteer de eerste
+                if (cboNacecode.SelectedIndex == -1 && cboNacecode.Items.Count > 0)
+                {
+                    cboNacecode.SelectedIndex = 0;
                 }
             }
             catch (Exception ex)
@@ -210,7 +220,7 @@ namespace BenchmarkTool.AdminApp.Pages
             return true;
         }
 
-        private void btnUploadLogo_Click(object sender, RoutedEventArgs e)
+        private void BtnUploadLogo_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -244,24 +254,20 @@ namespace BenchmarkTool.AdminApp.Pages
             }
         }
 
-        private void btnVerwijderLogo_Click(object sender, RoutedEventArgs e)
+        private void BtnVerwijderLogo_Click(object sender, RoutedEventArgs e)
         {
             // Reset logo
             _logoData = null;
             imgLogo.Source = null;
         }
 
-        private void btnOpslaan_Click(object sender, RoutedEventArgs e)
+        private void BtnOpslaan_Click(object sender, RoutedEventArgs e)
         {
             if (!ValideerFormulier())
                 return;
             
             try
             {
-                // Debug logging voor nace code
-                var selectedNacecode = cboNacecode.SelectedItem as Nacecode;
-                System.Diagnostics.Debug.WriteLine($"[OPSLAAN] Geselecteerde NACE-code: {(selectedNacecode != null ? selectedNacecode.Code : "NULL")}");
-                
                 // Zet form data naar bedrijfsobject
                 _bedrijf.Name = txtName.Text;
                 _bedrijf.Contact = txtContact.Text;
@@ -273,60 +279,32 @@ namespace BenchmarkTool.AdminApp.Pages
                 _bedrijf.Phone = txtPhone.Text;
                 _bedrijf.Login = txtLogin.Text;
                 
-                // Debug logging voor status
-                System.Diagnostics.Debug.WriteLine($"[OPSLAAN] Status ComboBox SelectedItem: {cboStatus.SelectedItem}");
-                
                 // Status
                 if (cboStatus.SelectedItem is ComboBoxItem statusItem)
                 {
                     _bedrijf.Status = statusItem.Tag.ToString();
-                    System.Diagnostics.Debug.WriteLine($"[OPSLAAN] Status gezet naar: {_bedrijf.Status}");
                 }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("[OPSLAAN] Geen status geselecteerd!");
-                }
-                
-                // Debug logging voor taal
-                System.Diagnostics.Debug.WriteLine($"[OPSLAAN] Taal ComboBox SelectedItem: {cboLanguage.SelectedItem}");
                 
                 // Taal
                 if (cboLanguage.SelectedItem is ComboBoxItem languageItem)
                 {
                     _bedrijf.Language = languageItem.Tag.ToString();
-                    System.Diagnostics.Debug.WriteLine($"[OPSLAAN] Taal gezet naar: {_bedrijf.Language}");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("[OPSLAAN] Geen taal geselecteerd!");
                 }
                 
                 // NACE-code
-                if (selectedNacecode != null)
+                if (cboNacecode.SelectedItem is ComboBoxItem nacecodeItem)
                 {
-                    _bedrijf.NacecodeCode = selectedNacecode.Code;
-                    System.Diagnostics.Debug.WriteLine($"[OPSLAAN] NACE-code gezet naar: {_bedrijf.NacecodeCode}");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("[OPSLAAN] Geen NACE-code geselecteerd!");
+                    _bedrijf.NacecodeCode = nacecodeItem.Tag.ToString();
                 }
                 
                 // Stel registratiedatum in bij nieuw bedrijf
                 if (!_isEditMode)
                 {
                     _bedrijf.RegDate = DateTime.Now;
-                    System.Diagnostics.Debug.WriteLine($"[OPSLAAN] Registratiedatum gezet naar: {_bedrijf.RegDate}");
                 }
                 
                 // Update lastmodified datum
                 _bedrijf.LastModified = DateTime.Now;
-                
-                // Debug logging voor belangrijke velden
-                System.Diagnostics.Debug.WriteLine($"[OPSLAAN] Naam: {_bedrijf.Name}, Login: {_bedrijf.Login}");
-                System.Diagnostics.Debug.WriteLine($"[OPSLAAN] Status: {_bedrijf.Status}, Taal: {_bedrijf.Language}");
-                System.Diagnostics.Debug.WriteLine($"[OPSLAAN] NACE-code: {_bedrijf.NacecodeCode}");
-                System.Diagnostics.Debug.WriteLine($"[OPSLAAN] Wachtwoord ingevuld: {!string.IsNullOrEmpty(txtPassword.Password)}");
                 
                 bool success;
                 
@@ -344,9 +322,7 @@ namespace BenchmarkTool.AdminApp.Pages
                 else
                 {
                     // Voeg nieuw bedrijf toe
-                    System.Diagnostics.Debug.WriteLine("[OPSLAAN] Start toevoegen van nieuw bedrijf");
                     _bedrijf.Id = _bedrijfRepository.Add(_bedrijf, txtPassword.Password);
-                    System.Diagnostics.Debug.WriteLine($"[OPSLAAN] Bedrijf toegevoegd met ID: {_bedrijf.Id}");
                     success = _bedrijf.Id > 0;
                 }
                 
@@ -375,12 +351,8 @@ namespace BenchmarkTool.AdminApp.Pages
             }
             catch (Exception ex)
             {
-                // Log de fout voor debugging
-                System.Diagnostics.Debug.WriteLine($"Fout bij opslaan bedrijf: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
                 if (ex.InnerException != null)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Inner exception: {ex.InnerException.Message}");
                     MessageBox.Show($"Fout bij opslaan: {ex.Message}\nDetails: {ex.InnerException?.Message}", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
@@ -390,11 +362,14 @@ namespace BenchmarkTool.AdminApp.Pages
             }
         }
 
-        private void btnAnnuleren_Click(object sender, RoutedEventArgs e)
+        private void BtnAnnuleren_Click(object sender, RoutedEventArgs e)
         {
             // Vraag om bevestiging als er wijzigingen zijn gemaakt
-            MessageBoxResult result = MessageBox.Show("Weet u zeker dat u wilt annuleren? Eventuele wijzigingen gaan verloren.", 
-                "Annuleren", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show(
+                "Weet u zeker dat u wilt annuleren? Eventuele wijzigingen gaan verloren.", 
+                "Annuleren", 
+                MessageBoxButton.YesNo, 
+                MessageBoxImage.Question);
                 
             if (result == MessageBoxResult.Yes)
             {
@@ -402,10 +377,10 @@ namespace BenchmarkTool.AdminApp.Pages
             }
         }
 
-        private void btnTerug_Click(object sender, RoutedEventArgs e)
+        private void BtnTerug_Click(object sender, RoutedEventArgs e)
         {
             // Zelfde functionaliteit als annuleren
-            btnAnnuleren_Click(sender, e);
+            BtnAnnuleren_Click(sender, e);
         }
     }
 } 

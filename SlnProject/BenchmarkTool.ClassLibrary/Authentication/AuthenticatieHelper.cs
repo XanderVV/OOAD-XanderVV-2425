@@ -1,7 +1,7 @@
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
-using System;
 
 namespace BenchmarkTool.ClassLibrary.Authentication
 {

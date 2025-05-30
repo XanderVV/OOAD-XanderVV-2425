@@ -1,6 +1,0 @@
----
-description: 
-globs: 
-alwaysApply: true
----
-Volg de Hongaarse notatie en camelCase/PascalCase conventies zoals beschreven in "01. Variabelen en berekeningen" @https://rogiervdl.github.io/CS-course/01_variabelen.html. Variabelen in camelCase, klassen en methoden in PascalCase.

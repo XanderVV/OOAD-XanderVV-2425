@@ -125,9 +125,9 @@ namespace BenchmarkTool.AdminApp.Pages
             }
         }
 
-        private void btnTerug_Click(object sender, RoutedEventArgs e)
+        private void BtnTerug_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (Window.GetWindow(this) as AdminMainWindow);
+            var mainWindow = Window.GetWindow(this) as AdminMainWindow;
             if (mainWindow != null)
             {
                 mainWindow.NavigeerNaarDashboard();
@@ -139,13 +139,13 @@ namespace BenchmarkTool.AdminApp.Pages
             }
         }
 
-        private void btnToevoegen_Click(object sender, RoutedEventArgs e)
+        private void BtnToevoegen_Click(object sender, RoutedEventArgs e)
         {
             // Navigeer naar het bedrijf toevoegen formulier
             NavigationService.Navigate(new BedrijfFormulierPage());
         }
 
-        private void btnWijzigen_Click(object sender, RoutedEventArgs e)
+        private void BtnWijzigen_Click(object sender, RoutedEventArgs e)
         {
             if (_geselecteerdBedrijf != null)
             {
@@ -156,13 +156,16 @@ namespace BenchmarkTool.AdminApp.Pages
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Fout bij het openen van het wijzigingsformulier: {ex.Message}", 
-                        "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(
+                        $"Fout bij het openen van het wijzigingsformulier: {ex.Message}", 
+                        "Fout", 
+                        MessageBoxButton.OK, 
+                        MessageBoxImage.Error);
                 }
             }
         }
 
-        private void btnVerwijderen_Click(object sender, RoutedEventArgs e)
+        private void BtnVerwijderen_Click(object sender, RoutedEventArgs e)
         {
             if (_geselecteerdBedrijf != null)
             {
@@ -182,21 +185,31 @@ namespace BenchmarkTool.AdminApp.Pages
                         
                         if (success)
                         {
-                            MessageBox.Show("Bedrijf is succesvol verwijderd.", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show(
+                                "Bedrijf is succesvol verwijderd.", 
+                                "Succes", 
+                                MessageBoxButton.OK, 
+                                MessageBoxImage.Information);
                             
                             // Herlaad de lijst van bedrijven
                             LaadBedrijven();
                         }
                         else
                         {
-                            MessageBox.Show("Kon het bedrijf niet verwijderen. Mogelijk bestaat het bedrijf niet meer.", 
-                                "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show(
+                                "Kon het bedrijf niet verwijderen. Mogelijk bestaat het bedrijf niet meer.", 
+                                "Fout", 
+                                MessageBoxButton.OK, 
+                                MessageBoxImage.Error);
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Fout bij het verwijderen van het bedrijf: {ex.Message}", 
-                            "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(
+                            $"Fout bij het verwijderen van het bedrijf: {ex.Message}", 
+                            "Fout", 
+                            MessageBoxButton.OK, 
+                            MessageBoxImage.Error);
                     }
                 }
             }

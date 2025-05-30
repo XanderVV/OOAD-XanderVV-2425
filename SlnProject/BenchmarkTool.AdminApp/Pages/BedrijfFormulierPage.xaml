@@ -26,7 +26,7 @@
                 
                 <TextBlock Grid.Column="0" x:Name="txtHeader" Text="Bedrijf Toevoegen" Style="{StaticResource HeaderTextStyle}"/>
                 <Button Grid.Column="2" x:Name="btnTerug" Style="{StaticResource StandardButtonStyle}" 
-                        Click="btnTerug_Click">
+                        Click="BtnTerug_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="◀️" Margin="0,0,8,0"/>
                         <TextBlock Text="Terug naar Bedrijvenbeheer"/>
@@ -91,15 +91,7 @@
                     
                     <TextBlock Text="NACE-code:" Style="{StaticResource LabelTextStyle}"/>
                     <ComboBox x:Name="cboNacecode" Style="{StaticResource StandardComboBoxStyle}" Margin="0,0,0,15">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    <Run Text="{Binding Code}"/>
-                                    <Run Text=" - "/>
-                                    <Run Text="{Binding Text}"/>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
+                        <!-- Nacecodes will be added programmatically instead of using binding -->
                     </ComboBox>
                     
                     <TextBlock Text="Taal:" Style="{StaticResource LabelTextStyle}"/>
@@ -112,14 +104,14 @@
                     <TextBlock Text="Logo:" Style="{StaticResource LabelTextStyle}"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                         <Button x:Name="btnUploadLogo" Style="{StaticResource StandardButtonStyle}" 
-                                Click="btnUploadLogo_Click" Margin="0,0,10,0">
+                                Click="BtnUploadLogo_Click" Margin="0,0,10,0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="📷" Margin="0,0,5,0"/>
                                 <TextBlock Text="Logo Uploaden"/>
                             </StackPanel>
                         </Button>
                         <Button x:Name="btnVerwijderLogo" Style="{StaticResource DangerButtonStyle}" 
-                                Click="btnVerwijderLogo_Click">
+                                Click="BtnVerwijderLogo_Click">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="🗑️" Margin="0,0,5,0"/>
                                 <TextBlock Text="Logo Verwijderen"/>
@@ -138,14 +130,14 @@
         <!-- Knoppen -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20">
             <Button x:Name="btnOpslaan" Style="{StaticResource PrimaryButtonStyle}" 
-                    Margin="0,0,10,0" Click="btnOpslaan_Click">
+                    Margin="0,0,10,0" Click="BtnOpslaan_Click">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="💾" Margin="0,0,5,0"/>
                     <TextBlock Text="Opslaan"/>
                 </StackPanel>
             </Button>
             <Button x:Name="btnAnnuleren" Style="{StaticResource StandardButtonStyle}" 
-                    Click="btnAnnuleren_Click">
+                    Click="BtnAnnuleren_Click">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="✖️" Margin="0,0,5,0"/>
                     <TextBlock Text="Annuleren"/>

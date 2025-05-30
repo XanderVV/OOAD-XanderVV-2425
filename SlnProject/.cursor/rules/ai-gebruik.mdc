@@ -1,6 +1,0 @@
----
-description: 
-globs: 
-alwaysApply: true
----
-Na elke aanpassing zal je een prompt schrijven voor ChatGPT. De inhoud van de prompt moet letterlijk beschrijven hoe ik het zou vragen om aan chatgpt wat jij net geimplementeerd hebt zorg ervoor dat de prompt ook standaard blijft dus niet vragen om praktische zaken zoals dingens installeren. Maak de rpompt zo menselijk mogelijk niet teveel opmaak soms maar heel soms een typfout of format fout

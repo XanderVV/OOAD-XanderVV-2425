@@ -42,7 +42,6 @@ namespace BenchmarkTool.CompanyApp.Pages
         private BenchmarkResultaat _huidigBenchmarkResultaat;
 
         // Verwijder alle tooltip-gerelateerde velden
-        private bool _tooltipHandlerAdded = false;
 
         public BenchmarkPage()
         {
@@ -266,7 +265,7 @@ namespace BenchmarkTool.CompanyApp.Pages
             }
         }
 
-        private void btnToepassen_Click(object sender, RoutedEventArgs e)
+        private void BtnToepassen_Click(object sender, RoutedEventArgs e)
         {
             // Controleer of de invoer geldig is
             if (!ValideerInvoer())
@@ -1002,7 +1001,7 @@ namespace BenchmarkTool.CompanyApp.Pages
             return result.ToString();
         }
 
-        private void btnTerug_Click(object sender, RoutedEventArgs e)
+        private void BtnTerug_Click(object sender, RoutedEventArgs e)
         {
             // Navigeer terug naar dashboard
             if (_hoofdVenster != null)
@@ -1012,9 +1011,9 @@ namespace BenchmarkTool.CompanyApp.Pages
         }
         
         // Alias methode voor de nieuwe knopnaam
-        private void btnTerugNaarDashboard_Click(object sender, RoutedEventArgs e)
+        private void BtnTerugNaarDashboard_Click(object sender, RoutedEventArgs e)
         {
-            btnTerug_Click(sender, e);
+            BtnTerug_Click(sender, e);
         }
         
         /// <summary>

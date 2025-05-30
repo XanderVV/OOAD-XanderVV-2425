@@ -26,7 +26,7 @@
                 
                 <TextBlock Grid.Column="0" Text="Registratieverzoeken Beheren" Style="{StaticResource HeaderTextStyle}"/>
                 <Button Grid.Column="2" x:Name="btnTerug" Style="{StaticResource StandardButtonStyle}" 
-                        Click="btnTerug_Click">
+                        Click="BtnTerug_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="🏠" Margin="0,0,8,0"/>
                         <TextBlock Text="Terug naar Dashboard"/>
@@ -93,14 +93,14 @@
             <!-- Knoppen -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Button x:Name="btnGoedkeuren" Style="{StaticResource StandardButtonStyle}" 
-                        Margin="0,0,10,0" Click="btnGoedkeuren_Click" IsEnabled="False">
+                        Margin="0,0,10,0" Click="BtnGoedkeuren_Click" IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="✅" Margin="0,0,5,0"/>
                         <TextBlock Text="Goedkeuren"/>
                     </StackPanel>
                 </Button>
                 <Button x:Name="btnAfwijzen" Style="{StaticResource DangerButtonStyle}" 
-                        Click="btnAfwijzen_Click" IsEnabled="False">
+                        Click="BtnAfwijzen_Click" IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="❌" Margin="0,0,5,0"/>
                         <TextBlock Text="Afwijzen"/>

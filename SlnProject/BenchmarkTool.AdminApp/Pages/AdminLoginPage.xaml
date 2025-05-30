@@ -22,15 +22,15 @@
                 
                 <TextBlock Text="Wachtwoord:" Style="{StaticResource LabelTextStyle}"/>
                 <PasswordBox x:Name="pwdPassword" Style="{StaticResource StandardPasswordBoxStyle}" 
-                             Margin="0,0,0,25" KeyDown="pwdPassword_KeyDown"/>
+                             Margin="0,0,0,25" KeyDown="PwdPassword_KeyDown"/>
                 
                 <Button x:Name="btnLogin" Content="Inloggen" Style="{StaticResource PrimaryButtonStyle}" 
-                        Width="150" Height="35" Click="btnLogin_Click" HorizontalAlignment="Center"/>
+                        Width="150" Height="35" Click="BtnLogin_Click" HorizontalAlignment="Center"/>
                 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
                     <ProgressBar x:Name="prgLogin" Width="120" Height="10" Visibility="Collapsed" 
                                  IsIndeterminate="True" Margin="0,0,10,0" Foreground="{StaticResource SecondaryColor}"/>
-                    <TextBlock x:Name="txtError" Foreground="{StaticResource AccentColor}" 
+                    <TextBlock x:Name="lblError" Foreground="{StaticResource AccentColor}" 
                                TextWrapping="Wrap" HorizontalAlignment="Center" FontWeight="SemiBold"/>
                 </StackPanel>
             </StackPanel>

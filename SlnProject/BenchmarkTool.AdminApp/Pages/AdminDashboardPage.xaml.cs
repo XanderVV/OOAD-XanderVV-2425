@@ -14,9 +14,9 @@ namespace BenchmarkTool.AdminApp.Pages
             InitializeComponent();
         }
 
-        private void btnBedrijvenBeheer_Click(object sender, RoutedEventArgs e)
+        private void BtnBedrijvenBeheer_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (Window.GetWindow(this) as AdminMainWindow);
+            var mainWindow = Window.GetWindow(this) as AdminMainWindow;
             if (mainWindow != null)
             {
                 mainWindow.NavigeerNaarBedrijvenBeheer();
@@ -28,9 +28,9 @@ namespace BenchmarkTool.AdminApp.Pages
             }
         }
 
-        private void btnRegistratieBeheer_Click(object sender, RoutedEventArgs e)
+        private void BtnRegistratieBeheer_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (Window.GetWindow(this) as AdminMainWindow);
+            var mainWindow = Window.GetWindow(this) as AdminMainWindow;
             if (mainWindow != null)
             {
                 mainWindow.NavigeerNaarRegistratieBeheer();
@@ -42,9 +42,9 @@ namespace BenchmarkTool.AdminApp.Pages
             }
         }
 
-        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (Window.GetWindow(this) as AdminMainWindow);
+            var mainWindow = Window.GetWindow(this) as AdminMainWindow;
             if (mainWindow != null)
             {
                 mainWindow.NavigeerNaarLogin();

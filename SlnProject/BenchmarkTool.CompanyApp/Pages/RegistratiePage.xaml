@@ -109,7 +109,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="txtLogoPath" Style="{StaticResource StandardTextBoxStyle}" IsReadOnly="True"/>
                             <Button x:Name="btnKiesLogo" Content="..." Grid.Column="1" Width="40" Margin="5,0,0,0" 
-                                    Style="{StaticResource StandardButtonStyle}" Click="btnKiesLogo_Click"/>
+                                    Style="{StaticResource StandardButtonStyle}" Click="BtnKiesLogo_Click"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
@@ -122,9 +122,9 @@
                 <!-- Knoppen -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="btnTerug" Content="Terug" Width="120" Margin="0,0,10,0" 
-                            Style="{StaticResource StandardButtonStyle}" Click="btnTerug_Click"/>
+                            Style="{StaticResource StandardButtonStyle}" Click="BtnTerug_Click"/>
                     <Button x:Name="btnRegistreer" Content="Registreren" Width="120" 
-                            Style="{StaticResource PrimaryButtonStyle}" Click="btnRegistreer_Click"/>
+                            Style="{StaticResource PrimaryButtonStyle}" Click="BtnRegistreer_Click"/>
                 </StackPanel>
                 
                 <!-- Foutmeldingen en statusberichten -->

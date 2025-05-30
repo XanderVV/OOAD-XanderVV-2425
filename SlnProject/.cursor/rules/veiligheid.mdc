@@ -1,6 +1,0 @@
----
-description: 
-globs: 
-alwaysApply: true
----
-Implementeer paswoord hashing om veilig paswoorden op te slaan, niet als plain text, zoals besproken in "06. .NET Classes" @https://rogiervdl.github.io/CS-course/06_dotnetclasses.html.

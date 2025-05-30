@@ -1,6 +1,0 @@
----
-description: 
-globs: 
-alwaysApply: true
----
-Implementeer duidelijke scheiding tussen admin en bedrijfstoegang zoals beschreven in "13. OO samenvatting" @https://rogiervdl.github.io/CS-course/13_oo_samenvatting.html voor juiste toepassing van OO principes.

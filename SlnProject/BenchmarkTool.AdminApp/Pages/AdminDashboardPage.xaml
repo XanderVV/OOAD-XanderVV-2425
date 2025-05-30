@@ -22,7 +22,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <TextBlock Grid.Column="0" Text="BenchmarkTool Beheerdersdashboard" Style="{StaticResource HeaderTextStyle}"/>
-                <Button Grid.Column="1" x:Name="btnLogout" Style="{StaticResource StandardButtonStyle}" Click="btnLogout_Click">
+                <Button Grid.Column="1" x:Name="btnLogout" Style="{StaticResource StandardButtonStyle}" Click="BtnLogout_Click">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🔓" Margin="0,0,8,0"/>
@@ -45,7 +45,7 @@
                 <Border Width="220" Height="200" Margin="15" Background="White" BorderBrush="{StaticResource MediumGrayColor}" 
                         BorderThickness="1" CornerRadius="5">
                     <Button x:Name="btnBedrijvenBeheer" Style="{StaticResource StandardButtonStyle}" 
-                            Background="Transparent" Click="btnBedrijvenBeheer_Click" BorderThickness="0">
+                            Background="Transparent" Click="BtnBedrijvenBeheer_Click" BorderThickness="0">
                         <StackPanel>
                             <Viewbox Width="80" Height="80" Margin="0,0,0,10">
                                 <ContentControl>
@@ -66,7 +66,7 @@
                 <Border Width="220" Height="200" Margin="15" Background="White" BorderBrush="{StaticResource MediumGrayColor}" 
                         BorderThickness="1" CornerRadius="5">
                     <Button x:Name="btnRegistratieBeheer" Style="{StaticResource StandardButtonStyle}" 
-                            Background="Transparent" Click="btnRegistratieBeheer_Click" BorderThickness="0">
+                            Background="Transparent" Click="BtnRegistratieBeheer_Click" BorderThickness="0">
                         <StackPanel>
                             <Viewbox Width="80" Height="80" Margin="0,0,0,10">
                                 <ContentControl>

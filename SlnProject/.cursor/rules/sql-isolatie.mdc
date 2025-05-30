@@ -1,6 +1,0 @@
----
-description: 
-globs: 
-alwaysApply: true
----
-Plaats alle SQL code exclusief in de class library. Volg de richtlijnen uit "14. SQL databanken" @https://rogiervdl.github.io/CS-course/14_sql_databanken.html voor correcte databank interactie.

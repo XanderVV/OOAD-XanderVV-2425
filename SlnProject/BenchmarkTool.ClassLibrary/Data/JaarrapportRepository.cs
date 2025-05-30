@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using Microsoft.Data.SqlClient;
 using BenchmarkTool.ClassLibrary.Models;
+using Microsoft.Data.SqlClient;
 
 namespace BenchmarkTool.ClassLibrary.Data
 {
@@ -21,7 +20,7 @@ namespace BenchmarkTool.ClassLibrary.Data
         /// <returns>Het gevonden jaarrapport of null</returns>
         public Jaarrapport GetById(int id)
         {
-            return GetById(TableName, IdColumn, id, MapToJaarrapport);
+            return GetById<Jaarrapport>(TableName, IdColumn, id, reader => MapToJaarrapport(reader));
         }
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace BenchmarkTool.ClassLibrary.Data
             string query = $"SELECT * FROM {TableName} WHERE company_id = @CompanyId";
             SqlParameter parameter = new SqlParameter("@CompanyId", companyId);
 
-            return _dbHelper.ExecuteList(query, MapToJaarrapport, parameter);
+            return DbHelper.ExecuteList<Jaarrapport>(query, reader => MapToJaarrapport(reader), parameter);
         }
 
         /// <summary>
@@ -46,20 +45,18 @@ namespace BenchmarkTool.ClassLibrary.Data
         public Jaarrapport GetByYearAndCompany(int year, int companyId)
         {
             string query = $"SELECT * FROM {TableName} WHERE year = @Year AND company_id = @CompanyId";
-            SqlParameter[] parameters = new SqlParameter[]
+            SqlParameter[] parameters = new SqlParameter[] { new SqlParameter("@Year", year), new SqlParameter("@CompanyId", companyId) };
+
+            Jaarrapport result = null;
+            DbHelper.ExecuteReader(query, delegate(SqlDataReader reader) 
             {
-                new SqlParameter("@Year", year),
-                new SqlParameter("@CompanyId", companyId)
-            };
+                if (reader.Read())
+                {
+                    result = MapToJaarrapport(reader);
+                }
+            }, parameters);
 
-            DataTable result = _dbHelper.ExecuteDataTable(query, parameters);
-
-            if (result.Rows.Count == 0)
-            {
-                return null;
-            }
-
-            return MapToJaarrapport(result.Rows[0]);
+            return result;
         }
 
         /// <summary>
@@ -84,7 +81,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                 new SqlParameter("@CompanyId", jaarrapport.CompanyId)
             };
 
-            return Convert.ToInt32(_dbHelper.ExecuteScalar(query, parameters));
+            return Convert.ToInt32(DbHelper.ExecuteScalar(query, parameters));
         }
 
         /// <summary>
@@ -109,7 +106,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                 new SqlParameter("@CompanyId", jaarrapport.CompanyId)
             };
 
-            int rowsAffected = _dbHelper.ExecuteNonQuery(query, parameters);
+            int rowsAffected = DbHelper.ExecuteNonQuery(query, parameters);
             return rowsAffected > 0;
         }
 
@@ -133,7 +130,7 @@ namespace BenchmarkTool.ClassLibrary.Data
             string query = "SELECT * FROM Costs WHERE yearreport_id = @YearreportId";
             SqlParameter parameter = new SqlParameter("@YearreportId", yearreportId);
 
-            return _dbHelper.ExecuteList(query, MapToKost, parameter);
+            return DbHelper.ExecuteList<Kost>(query, reader => MapToKost(reader), parameter);
         }
 
         /// <summary>
@@ -146,7 +143,7 @@ namespace BenchmarkTool.ClassLibrary.Data
             string query = "SELECT * FROM Answers WHERE yearreport_id = @YearreportId";
             SqlParameter parameter = new SqlParameter("@YearreportId", yearreportId);
 
-            return _dbHelper.ExecuteList(query, MapToAntwoord, parameter);
+            return DbHelper.ExecuteList<Antwoord>(query, reader => MapToAntwoord(reader), parameter);
         }
 
         /// <summary>
@@ -160,7 +157,7 @@ namespace BenchmarkTool.ClassLibrary.Data
             // Eerst bestaande kosten verwijderen
             string deleteQuery = "DELETE FROM Costs WHERE yearreport_id = @YearreportId";
             SqlParameter deleteParameter = new SqlParameter("@YearreportId", yearreportId);
-            _dbHelper.ExecuteNonQuery(deleteQuery, deleteParameter);
+            DbHelper.ExecuteNonQuery(deleteQuery, deleteParameter);
 
             // Nieuwe kosten toevoegen
             int successCount = 0;
@@ -183,7 +180,7 @@ namespace BenchmarkTool.ClassLibrary.Data
 
                 try
                 {
-                    _dbHelper.ExecuteNonQuery(insertQuery, parameters);
+                    DbHelper.ExecuteNonQuery(insertQuery, parameters);
                     successCount++;
                 }
                 catch (Exception ex)
@@ -206,7 +203,7 @@ namespace BenchmarkTool.ClassLibrary.Data
             // Eerst bestaande antwoorden verwijderen
             string deleteQuery = "DELETE FROM Answers WHERE yearreport_id = @YearreportId";
             SqlParameter deleteParameter = new SqlParameter("@YearreportId", yearreportId);
-            _dbHelper.ExecuteNonQuery(deleteQuery, deleteParameter);
+            DbHelper.ExecuteNonQuery(deleteQuery, deleteParameter);
 
             // Nieuwe antwoorden toevoegen
             int successCount = 0;
@@ -228,7 +225,7 @@ namespace BenchmarkTool.ClassLibrary.Data
 
                 try
                 {
-                    _dbHelper.ExecuteNonQuery(insertQuery, parameters);
+                    DbHelper.ExecuteNonQuery(insertQuery, parameters);
                     successCount++;
                 }
                 catch (Exception ex)
@@ -247,82 +244,82 @@ namespace BenchmarkTool.ClassLibrary.Data
         public List<Vraag> GetQuestionsNotInfo()
         {
             string query = "SELECT * FROM Questions WHERE type != 'info'";
-            return _dbHelper.ExecuteList(query, MapToVraag);
+            return DbHelper.ExecuteList<Vraag>(query, reader => MapToVraag(reader));
         }
 
         #region Private Methods
 
         /// <summary>
-        /// Converteert een DataRow naar een Jaarrapport object
+        /// Converteert een SqlDataReader naar een Jaarrapport object
         /// </summary>
-        /// <param name="row">De DataRow met jaarrapportgegevens</param>
+        /// <param name="reader">De SqlDataReader met jaarrapportgegevens</param>
         /// <returns>Een Jaarrapport object</returns>
-        private Jaarrapport MapToJaarrapport(DataRow row)
+        private Jaarrapport MapToJaarrapport(SqlDataReader reader)
         {
             return new Jaarrapport
             {
-                Id = Convert.ToInt32(row["id"]),
-                Year = Convert.ToInt32(row["year"]),
-                Fte = Convert.ToDecimal(row["fte"]),
-                CompanyId = Convert.ToInt32(row["company_id"])
+                Id = Convert.ToInt32(reader["id"]),
+                Year = Convert.ToInt32(reader["year"]),
+                Fte = Convert.ToDecimal(reader["fte"]),
+                CompanyId = Convert.ToInt32(reader["company_id"])
             };
         }
 
         /// <summary>
-        /// Converteert een DataRow naar een Kost object
+        /// Converteert een SqlDataReader naar een Kost object
         /// </summary>
-        /// <param name="row">De DataRow met kostgegevens</param>
+        /// <param name="reader">De SqlDataReader met kostgegevens</param>
         /// <returns>Een Kost object</returns>
-        private Kost MapToKost(DataRow row)
+        private Kost MapToKost(SqlDataReader reader)
         {
             return new Kost
             {
-                Id = Convert.ToInt32(row["id"]),
-                Value = Convert.ToDecimal(row["value"]),
-                CosttypeType = row["costtype_type"].ToString(),
-                CategoryNr = Convert.ToInt32(row["category_nr"]),
-                YearreportId = Convert.ToInt32(row["yearreport_id"])
+                Id = Convert.ToInt32(reader["id"]),
+                Value = Convert.ToDecimal(reader["value"]),
+                CosttypeType = reader["costtype_type"].ToString(),
+                CategoryNr = Convert.ToInt32(reader["category_nr"]),
+                YearreportId = Convert.ToInt32(reader["yearreport_id"])
             };
         }
 
         /// <summary>
-        /// Converteert een DataRow naar een Antwoord object
+        /// Converteert een SqlDataReader naar een Antwoord object
         /// </summary>
-        /// <param name="row">De DataRow met antwoordgegevens</param>
+        /// <param name="reader">De SqlDataReader met antwoordgegevens</param>
         /// <returns>Een Antwoord object</returns>
-        private Antwoord MapToAntwoord(DataRow row)
+        private Antwoord MapToAntwoord(SqlDataReader reader)
         {
             return new Antwoord
             {
-                Id = Convert.ToInt32(row["id"]),
-                Value = ConvertFromDBValue<string>(row["value"]),
-                QuestionId = Convert.ToInt32(row["question_id"]),
-                YearreportId = Convert.ToInt32(row["yearreport_id"])
+                Id = Convert.ToInt32(reader["id"]),
+                Value = ConvertFromDBValue<string>(reader["value"]),
+                QuestionId = Convert.ToInt32(reader["question_id"]),
+                YearreportId = Convert.ToInt32(reader["yearreport_id"])
             };
         }
 
         /// <summary>
-        /// Converteert een DataRow naar een Vraag object
+        /// Converteert een SqlDataReader naar een Vraag object
         /// </summary>
-        /// <param name="row">De DataRow met vraaggegevens</param>
+        /// <param name="reader">De SqlDataReader met vraaggegevens</param>
         /// <returns>Een Vraag object</returns>
-        private Vraag MapToVraag(DataRow row)
+        private Vraag MapToVraag(SqlDataReader reader)
         {
             return new Vraag
             {
-                Id = Convert.ToInt32(row["id"]),
-                Text = row["text"].ToString(),
-                TextFr = ConvertFromDBValue<string>(row["textFr"]),
-                TextEn = ConvertFromDBValue<string>(row["textEn"]),
-                Tooltip = ConvertFromDBValue<string>(row["tooltip"]),
-                TooltipFr = ConvertFromDBValue<string>(row["tooltipFr"]),
-                TooltipEn = ConvertFromDBValue<string>(row["tooltipEn"]),
-                Type = row["type"].ToString(),
-                Values = ConvertFromDBValue<string>(row["values"]),
-                ValuesFr = ConvertFromDBValue<string>(row["valuesFr"]),
-                ValuesEn = ConvertFromDBValue<string>(row["valuesEn"]),
-                MaxValue = ConvertFromDBValue<decimal?>(row["maxvalue"]),
-                CategoryNr = Convert.ToInt32(row["category_nr"])
+                Id = Convert.ToInt32(reader["id"]),
+                Text = reader["text"].ToString(),
+                TextFr = ConvertFromDBValue<string>(reader["textFr"]),
+                TextEn = ConvertFromDBValue<string>(reader["textEn"]),
+                Tooltip = ConvertFromDBValue<string>(reader["tooltip"]),
+                TooltipFr = ConvertFromDBValue<string>(reader["tooltipFr"]),
+                TooltipEn = ConvertFromDBValue<string>(reader["tooltipEn"]),
+                Type = reader["type"].ToString(),
+                Values = ConvertFromDBValue<string>(reader["values"]),
+                ValuesFr = ConvertFromDBValue<string>(reader["valuesFr"]),
+                ValuesEn = ConvertFromDBValue<string>(reader["valuesEn"]),
+                MaxValue = ConvertFromDBValue<decimal?>(reader["maxvalue"]),
+                CategoryNr = Convert.ToInt32(reader["category_nr"])
             };
         }
 

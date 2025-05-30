@@ -26,7 +26,7 @@
                 
                 <TextBlock Grid.Column="0" Text="Bedrijvenbeheer" Style="{StaticResource HeaderTextStyle}"/>
                 <Button Grid.Column="2" x:Name="btnTerug" Style="{StaticResource StandardButtonStyle}" 
-                        Click="btnTerug_Click">
+                        Click="BtnTerug_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="🏠" Margin="0,0,8,0"/>
                         <TextBlock Text="Terug naar Dashboard"/>
@@ -76,21 +76,21 @@
         <Grid Grid.Row="2" Margin="20">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="btnToevoegen" Style="{StaticResource StandardButtonStyle}" 
-                        Margin="0,0,10,0" Click="btnToevoegen_Click">
+                        Margin="0,0,10,0" Click="BtnToevoegen_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="➕" Margin="0,0,5,0"/>
                         <TextBlock Text="Toevoegen"/>
                     </StackPanel>
                 </Button>
                 <Button x:Name="btnWijzigen" Style="{StaticResource StandardButtonStyle}" 
-                        Margin="0,0,10,0" Click="btnWijzigen_Click" IsEnabled="False">
+                        Margin="0,0,10,0" Click="BtnWijzigen_Click" IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="✏️" Margin="0,0,5,0"/>
                         <TextBlock Text="Wijzigen"/>
                     </StackPanel>
                 </Button>
                 <Button x:Name="btnVerwijderen" Style="{StaticResource DangerButtonStyle}" 
-                        Click="btnVerwijderen_Click" IsEnabled="False">
+                        Click="BtnVerwijderen_Click" IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="🗑️" Margin="0,0,5,0"/>
                         <TextBlock Text="Verwijderen"/>

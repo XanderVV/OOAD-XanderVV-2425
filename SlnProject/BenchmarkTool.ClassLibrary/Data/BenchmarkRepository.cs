@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using Microsoft.Data.SqlClient;
 using BenchmarkTool.ClassLibrary.Models;
+using Microsoft.Data.SqlClient;
 
 namespace BenchmarkTool.ClassLibrary.Data
 {
@@ -13,17 +12,19 @@ namespace BenchmarkTool.ClassLibrary.Data
     public class BenchmarkRepository : DatabaseRepository, IBenchmarkRepository
     {
         /// <summary>
-        /// Constructor met standaard DatabaseHelper
+        /// Initializes a new instance of the <see cref="BenchmarkRepository"/> class with a default DatabaseHelper.
         /// </summary>
-        public BenchmarkRepository() : base()
+        public BenchmarkRepository() 
+            : base()
         {
         }
 
         /// <summary>
-        /// Constructor met expliciete DatabaseHelper
+        /// Initializes a new instance of the <see cref="BenchmarkRepository"/> class with an explicit DatabaseHelper.
         /// </summary>
         /// <param name="dbHelper">De te gebruiken DatabaseHelper</param>
-        public BenchmarkRepository(DatabaseHelper dbHelper) : base(dbHelper)
+        public BenchmarkRepository(DatabaseHelper dbHelper) 
+            : base(dbHelper)
         {
         }
 
@@ -106,27 +107,35 @@ namespace BenchmarkTool.ClassLibrary.Data
                     JOIN Companies c ON y.company_id = c.id
                     WHERE y.company_id = @CompanyId AND y.year = @Year";
 
-                SqlParameter[] jaarrapportParams = new SqlParameter[]
-                {
-                    new SqlParameter("@CompanyId", companyId),
-                    new SqlParameter("@Year", year)
+                SqlParameter[] jaarrapportParams = new SqlParameter[] { 
+                    new SqlParameter("@CompanyId", companyId), 
+                    new SqlParameter("@Year", year) 
                 };
 
-                DataTable jaarrapportTable = _dbHelper.ExecuteDataTable(jaarrapportQuery, jaarrapportParams);
-                
-                if (jaarrapportTable.Rows.Count == 0)
+                // Get yearreport data using ExecuteReader
+                int jaarrapportId = 0;
+                string naceCode = "";
+                decimal fte = 0;
+
+                DbHelper.ExecuteReader(jaarrapportQuery, reader 
+                => 
+                {
+                    if (reader.Read())
+                    {
+                        jaarrapportId = Convert.ToInt32(reader["id"]);
+                        naceCode = reader["nacecode_code"].ToString();
+                        fte = Convert.ToDecimal(reader["fte"]);
+                    }
+                }, jaarrapportParams);
+
+                if (jaarrapportId == 0)
                 {
                     return result; // Geen jaarrapport gevonden voor dit jaar
                 }
 
-                var jaarrapportRow = jaarrapportTable.Rows[0];
-                int jaarrapportId = Convert.ToInt32(jaarrapportRow["id"]);
-                string naceCode = jaarrapportRow["nacecode_code"].ToString();
-
                 // Ophalen van fte data indien geselecteerd
                 if (selectedIndicators.Contains("fte"))
                 {
-                    decimal fte = Convert.ToDecimal(jaarrapportRow["fte"]);
                     result.Add(new BenchmarkData
                     {
                         Indicator = "fte",
@@ -145,7 +154,9 @@ namespace BenchmarkTool.ClassLibrary.Data
 
                 if (selectedCostTypes.Any())
                 {
-                    string placeholders = string.Join(",", selectedCostTypes.Select((_, i) => $"@CostType{i}"));
+                    string placeholders = string.Join(
+                        ",", 
+                        selectedCostTypes.Select((_, i) => $"@CostType{i}"));
                     
                     string kostenQuery = $@"
                         SELECT c.value, c.costtype_type 
@@ -163,9 +174,9 @@ namespace BenchmarkTool.ClassLibrary.Data
                         kostenParams.Add(new SqlParameter($"@CostType{i}", selectedCostTypes[i]));
                     }
 
-                    DataTable kostenTable = _dbHelper.ExecuteDataTable(kostenQuery, kostenParams.ToArray());
+                    var kostenData = DbHelper.ExecuteQuery(kostenQuery, kostenParams.ToArray());
 
-                    foreach (DataRow row in kostenTable.Rows)
+                    foreach (var row in kostenData)
                     {
                         result.Add(new BenchmarkData
                         {
@@ -186,7 +197,9 @@ namespace BenchmarkTool.ClassLibrary.Data
 
                 if (selectedQuestionIds.Any())
                 {
-                    string placeholders = string.Join(",", selectedQuestionIds.Select((_, i) => $"@QuestionId{i}"));
+                    string placeholders = string.Join(
+                        ",",
+                        selectedQuestionIds.Select((_, i) => $"@QuestionId{i}"));
                     
                     string antwoordenQuery = $@"
                         SELECT a.value, a.question_id 
@@ -204,9 +217,9 @@ namespace BenchmarkTool.ClassLibrary.Data
                         antwoordenParams.Add(new SqlParameter($"@QuestionId{i}", selectedQuestionIds[i]));
                     }
 
-                    DataTable antwoordenTable = _dbHelper.ExecuteDataTable(antwoordenQuery, antwoordenParams.ToArray());
+                    var antwoordenData = DbHelper.ExecuteQuery(antwoordenQuery, antwoordenParams.ToArray());
 
-                    foreach (DataRow row in antwoordenTable.Rows)
+                    foreach (var row in antwoordenData)
                     {
                         decimal waarde;
                         if (decimal.TryParse(row["value"].ToString(), out waarde))
@@ -276,9 +289,9 @@ namespace BenchmarkTool.ClassLibrary.Data
                     parameters.Add(new SqlParameter("@NaceFilter", naceFilter));
                 }
 
-                DataTable dataTable = _dbHelper.ExecuteDataTable(query, parameters.ToArray());
+                var results = DbHelper.ExecuteQuery(query, parameters.ToArray());
 
-                foreach (DataRow row in dataTable.Rows)
+                foreach (var row in results)
                 {
                     result.Add(new BenchmarkData
                     {
@@ -355,9 +368,9 @@ namespace BenchmarkTool.ClassLibrary.Data
                     parameters.Add(new SqlParameter("@NaceFilter", naceFilter));
                 }
 
-                DataTable dataTable = _dbHelper.ExecuteDataTable(query, parameters.ToArray());
+                var results = DbHelper.ExecuteQuery(query, parameters.ToArray());
 
-                foreach (DataRow row in dataTable.Rows)
+                foreach (var row in results)
                 {
                     result.Add(new BenchmarkData
                     {
@@ -436,9 +449,9 @@ namespace BenchmarkTool.ClassLibrary.Data
                     parameters.Add(new SqlParameter("@NaceFilter", naceFilter));
                 }
 
-                DataTable dataTable = _dbHelper.ExecuteDataTable(query, parameters.ToArray());
+                var results = DbHelper.ExecuteQuery(query, parameters.ToArray());
 
-                foreach (DataRow row in dataTable.Rows)
+                foreach (var row in results)
                 {
                     decimal waarde;
                     if (decimal.TryParse(row["value"].ToString(), out waarde))

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using Microsoft.Data.SqlClient;
-using BenchmarkTool.ClassLibrary.Models;
 using BenchmarkTool.ClassLibrary.Authentication;
+using BenchmarkTool.ClassLibrary.Models;
+using Microsoft.Data.SqlClient;
 
 namespace BenchmarkTool.ClassLibrary.Data
 {
@@ -22,7 +22,16 @@ namespace BenchmarkTool.ClassLibrary.Data
         /// <returns>Het gevonden bedrijf of null</returns>
         public Bedrijf GetById(int id)
         {
-            return GetById(TableName, IdColumn, id, MapToBedrijf);
+            string query = $"SELECT * FROM {TableName} WHERE id = @Id";
+            SqlParameter parameter = new SqlParameter("@Id", id);
+
+            var results = DbHelper.ExecuteQuery(query, parameter);
+            if (results.Count == 0)
+            {
+                return null;
+            }
+
+            return MapToBedrijf(results[0]);
         }
 
         /// <summary>
@@ -35,14 +44,14 @@ namespace BenchmarkTool.ClassLibrary.Data
             string query = $"SELECT * FROM {TableName} WHERE login = @Username";
             SqlParameter parameter = new SqlParameter("@Username", username);
 
-            DataTable result = _dbHelper.ExecuteDataTable(query, parameter);
+            var results = DbHelper.ExecuteQuery(query, parameter);
 
-            if (result.Rows.Count == 0)
+            if (results.Count == 0)
             {
                 return null;
             }
 
-            return MapToBedrijf(result.Rows[0]);
+            return MapToBedrijf(results[0]);
         }
 
         /// <summary>
@@ -55,14 +64,36 @@ namespace BenchmarkTool.ClassLibrary.Data
             string query = $"SELECT * FROM {TableName} WHERE login = @Login";
             SqlParameter parameter = new SqlParameter("@Login", login);
 
-            DataTable result = _dbHelper.ExecuteDataTable(query, parameter);
+            Bedrijf result = null;
+            DbHelper.ExecuteReader(query, delegate(SqlDataReader reader)
+            {
+                if (reader.Read())
+                {
+                    result = MapToBedrijf(reader);
+                }
+            }, parameter);
 
-            if (result.Rows.Count == 0)
+            return result;
+        }
+
+        /// <summary>
+        /// Haalt een bedrijf op basis van login en password hash
+        /// </summary>
+        /// <param name="login">Login van het bedrijf</param>
+        /// <param name="passwordHash">Hash van het wachtwoord</param>
+        /// <returns>Het gevonden bedrijf of null</returns>
+        public Bedrijf GetBedrijfByLoginAndPasswordHash(string login, string passwordHash)
+        {
+            string query = $"SELECT * FROM {TableName} WHERE login = @Login AND password_hash = @PasswordHash";
+            SqlParameter[] parameters = { new SqlParameter("@Login", login), new SqlParameter("@PasswordHash", passwordHash) };
+
+            var results = DbHelper.ExecuteQuery(query, parameters);
+            if (results.Count == 0)
             {
                 return null;
             }
 
-            return MapToBedrijf(result.Rows[0]);
+            return MapToBedrijf(results[0]);
         }
 
         /// <summary>
@@ -71,7 +102,7 @@ namespace BenchmarkTool.ClassLibrary.Data
         /// <returns>Lijst van alle bedrijven</returns>
         public List<Bedrijf> GetAll()
         {
-            return GetAll(TableName, MapToBedrijf);
+            return GetAll<Bedrijf>(TableName, reader => MapToBedrijf(reader));
         }
 
         /// <summary>
@@ -83,7 +114,7 @@ namespace BenchmarkTool.ClassLibrary.Data
             string query = $"SELECT * FROM {TableName} WHERE status = @Status";
             SqlParameter parameter = new SqlParameter("@Status", "Pending");
 
-            return _dbHelper.ExecuteList(query, MapToBedrijf, parameter);
+            return DbHelper.ExecuteList<Bedrijf>(query, reader => MapToBedrijf(reader), parameter);
         }
 
         /// <summary>
@@ -118,7 +149,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                 {
                     // Haal de hoogste ID op uit de database en verhoog met 1
                     string queryMaxId = $"SELECT ISNULL(MAX(id), 0) + 1 FROM {TableName}";
-                    bedrijf.Id = Convert.ToInt32(_dbHelper.ExecuteScalar(queryMaxId));
+                    bedrijf.Id = Convert.ToInt32(DbHelper.ExecuteScalar(queryMaxId));
                     System.Diagnostics.Debug.WriteLine($"[CREATE] Gegenereerde nieuwe ID: {bedrijf.Id}");
                 }
                 
@@ -159,7 +190,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                     System.Diagnostics.Debug.WriteLine($"[CREATE] Parameter: {param.ParameterName} = {(param.Value == DBNull.Value ? "NULL" : param.Value.ToString())}");
                 }
 
-                return Convert.ToInt32(_dbHelper.ExecuteScalar(query, parameters));
+                return Convert.ToInt32(DbHelper.ExecuteScalar(query, parameters));
             }
             catch (Exception ex)
             {
@@ -220,12 +251,12 @@ namespace BenchmarkTool.ClassLibrary.Data
                 new SqlParameter("@AcceptDate", ConvertToDBValue(bedrijf.AcceptDate)),
                 new SqlParameter("@LastModified", ConvertToDBValue(DateTime.Now)),
                 new SqlParameter("@Status", bedrijf.Status),
-                new SqlParameter("@Language", ConvertToDBValue(bedrijf.Language)),
+                new SqlParameter("@Language", ConvertToDBValue(bedrijf.Language ?? "Nederlands")),
                 new SqlParameter("@Logo", SqlDbType.VarBinary) { Value = ConvertToDBValue(bedrijf.Logo) },
                 new SqlParameter("@NacecodeCode", ConvertToDBValue(bedrijf.NacecodeCode)),
             };
 
-            int rowsAffected = _dbHelper.ExecuteNonQuery(query, parameters);
+            int rowsAffected = DbHelper.ExecuteNonQuery(query, parameters);
             return rowsAffected > 0;
         }
 
@@ -269,7 +300,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                     new SqlParameter("@LastModified", DateTime.Now),
                 };
 
-                int rowsAffected = _dbHelper.ExecuteNonQuery(query, parameters);
+                int rowsAffected = DbHelper.ExecuteNonQuery(query, parameters);
                 return rowsAffected > 0;
             }
             catch (Exception ex)
@@ -304,7 +335,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                 new SqlParameter("@LastModified", DateTime.Now),
             };
 
-            int rowsAffected = _dbHelper.ExecuteNonQuery(query, parameters);
+            int rowsAffected = DbHelper.ExecuteNonQuery(query, parameters);
             return rowsAffected > 0;
         }
 
@@ -318,7 +349,7 @@ namespace BenchmarkTool.ClassLibrary.Data
             string query = "SELECT logo FROM Companies WHERE id = @Id";
             SqlParameter parameter = new SqlParameter("@Id", id);
 
-            object result = _dbHelper.ExecuteScalar(query, parameter);
+            object result = DbHelper.ExecuteScalar(query, parameter);
             return result as byte[];
         }
 
@@ -343,7 +374,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                 new SqlParameter("@LastModified", DateTime.Now),
             };
 
-            int rowsAffected = _dbHelper.ExecuteNonQuery(query, parameters);
+            int rowsAffected = DbHelper.ExecuteNonQuery(query, parameters);
             return rowsAffected > 0;
         }
 
@@ -374,7 +405,7 @@ namespace BenchmarkTool.ClassLibrary.Data
                     new SqlParameter("@LastModified", DateTime.Now),
                 };
 
-                int rowsAffected = _dbHelper.ExecuteNonQuery(query, parameters);
+                int rowsAffected = DbHelper.ExecuteNonQuery(query, parameters);
                 return rowsAffected > 0;
             }
             catch (Exception ex)
@@ -454,42 +485,68 @@ namespace BenchmarkTool.ClassLibrary.Data
                 new SqlParameter("@LastModified", DateTime.Now),
             };
 
-            int rowsAffected = _dbHelper.ExecuteNonQuery(query, parameters);
+            int rowsAffected = DbHelper.ExecuteNonQuery(query, parameters);
             return rowsAffected > 0;
+        }
+
+        /// <summary>
+        /// Mapt een dictionary naar een Bedrijf-object
+        /// </summary>
+        /// <param name="row">Dictionary met de data</param>
+        /// <returns>Gemapte Bedrijf-object</returns>
+        private Bedrijf MapToBedrijf(Dictionary<string, object> row)
+        {
+            return new Bedrijf
+            {
+                Id = Convert.ToInt32(row["id"]),
+                Login = row["login"]?.ToString(),
+                Password = row["password"]?.ToString(),
+                Name = row["name"]?.ToString(),
+                Address = row["address"]?.ToString(),
+                Zip = row["zip"]?.ToString(),
+                City = row["city"]?.ToString(),
+                Country = row["country"]?.ToString(),
+                Btw = row["btw"]?.ToString(),
+                Contact = row["contact"]?.ToString(),
+                Email = row["email"]?.ToString(),
+                Phone = row["phone"]?.ToString(),
+                Status = row["status"]?.ToString(),
+                NacecodeCode = row["nacecode_code"]?.ToString()
+            };
         }
 
         #region Private Methods
 
         /// <summary>
-        /// Converteert een DataRow naar een Bedrijf object
+        /// Converteert een SqlDataReader naar een Bedrijf object
         /// </summary>
-        /// <param name="row">De DataRow met bedrijfsgegevens</param>
+        /// <param name="reader">De SqlDataReader met bedrijfsgegevens</param>
         /// <returns>Een Bedrijf object</returns>
-        private Bedrijf MapToBedrijf(DataRow row)
+        private Bedrijf MapToBedrijf(SqlDataReader reader)
         {
             try
             {
                 return new Bedrijf
                 {
-                    Id = Convert.ToInt32(row["id"]),
-                    Name = row["name"] != DBNull.Value ? Convert.ToString(row["name"]) : string.Empty,
-                    Contact = row["contact"] != DBNull.Value ? Convert.ToString(row["contact"]) : null,
-                    Address = row["address"] != DBNull.Value ? Convert.ToString(row["address"]) : null,
-                    Zip = row["zip"] != DBNull.Value ? Convert.ToString(row["zip"]) : null,
-                    City = row["city"] != DBNull.Value ? Convert.ToString(row["city"]) : null,
-                    Country = row["country"] != DBNull.Value ? Convert.ToString(row["country"]) : null,
-                    Phone = row["phone"] != DBNull.Value ? Convert.ToString(row["phone"]) : null,
-                    Email = row["email"] != DBNull.Value ? Convert.ToString(row["email"]) : null,
-                    Btw = row["btw"] != DBNull.Value ? Convert.ToString(row["btw"]) : null,
-                    Login = row["login"] != DBNull.Value ? Convert.ToString(row["login"]) : string.Empty,
-                    Password = row["password"] != DBNull.Value ? Convert.ToString(row["password"]) : null,
-                    RegDate = row["regdate"] != DBNull.Value ? Convert.ToDateTime(row["regdate"]) : DateTime.MinValue,
-                    AcceptDate = row["acceptdate"] != DBNull.Value ? Convert.ToDateTime(row["acceptdate"]) as DateTime? : null,
-                    LastModified = row["lastmodified"] != DBNull.Value ? Convert.ToDateTime(row["lastmodified"]) as DateTime? : null,
-                    Status = row["status"] != DBNull.Value ? Convert.ToString(row["status"]) : string.Empty,
-                    Language = row["language"] != DBNull.Value ? Convert.ToString(row["language"]) : null,
-                    Logo = row["logo"] != DBNull.Value ? (byte[])row["logo"] : null,
-                    NacecodeCode = row["nacecode_code"] != DBNull.Value ? Convert.ToString(row["nacecode_code"]) : null
+                    Id = Convert.ToInt32(reader["id"]),
+                    Name = reader["name"] != DBNull.Value ? Convert.ToString(reader["name"]) : string.Empty,
+                    Contact = reader["contact"] != DBNull.Value ? Convert.ToString(reader["contact"]) : null,
+                    Address = reader["address"] != DBNull.Value ? Convert.ToString(reader["address"]) : null,
+                    Zip = reader["zip"] != DBNull.Value ? Convert.ToString(reader["zip"]) : null,
+                    City = reader["city"] != DBNull.Value ? Convert.ToString(reader["city"]) : null,
+                    Country = reader["country"] != DBNull.Value ? Convert.ToString(reader["country"]) : null,
+                    Phone = reader["phone"] != DBNull.Value ? Convert.ToString(reader["phone"]) : null,
+                    Email = reader["email"] != DBNull.Value ? Convert.ToString(reader["email"]) : null,
+                    Btw = reader["btw"] != DBNull.Value ? Convert.ToString(reader["btw"]) : null,
+                    Login = reader["login"] != DBNull.Value ? Convert.ToString(reader["login"]) : string.Empty,
+                    Password = reader["password"] != DBNull.Value ? Convert.ToString(reader["password"]) : null,
+                    RegDate = reader["regdate"] != DBNull.Value ? Convert.ToDateTime(reader["regdate"]) : DateTime.MinValue,
+                    AcceptDate = reader["acceptdate"] != DBNull.Value ? Convert.ToDateTime(reader["acceptdate"]) as DateTime? : null,
+                    LastModified = reader["lastmodified"] != DBNull.Value ? Convert.ToDateTime(reader["lastmodified"]) as DateTime? : null,
+                    Status = reader["status"] != DBNull.Value ? Convert.ToString(reader["status"]) : string.Empty,
+                    Language = reader["language"] != DBNull.Value ? Convert.ToString(reader["language"]) : null,
+                    Logo = reader["logo"] != DBNull.Value ? (byte[])reader["logo"] : null,
+                    NacecodeCode = reader["nacecode_code"] != DBNull.Value ? Convert.ToString(reader["nacecode_code"]) : null
                 };
             }
             catch (Exception ex)

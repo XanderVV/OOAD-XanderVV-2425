@@ -18,13 +18,14 @@ namespace BenchmarkTool.AdminApp
     public partial class AdminMainWindow : Window
     {
         /// <summary>
-        /// Maakt de MainFrame toegankelijk voor tests
+        /// Gets the main frame for navigation, making it accessible for tests
         /// </summary>
         public Frame NavigationFrame => MainFrame;
         
         public AdminMainWindow()
         {
             InitializeComponent();
+            
             // Navigeer naar de login pagina bij het opstarten
             NavigeerNaar(new Pages.AdminLoginPage());
         }
@@ -96,27 +97,27 @@ namespace BenchmarkTool.AdminApp
 
         #region Menu Event Handlers
 
-        private void mnuLogout_Click(object sender, RoutedEventArgs e)
+        private void MnuLogout_Click(object sender, RoutedEventArgs e)
         {
             NavigeerNaarLogin();
         }
 
-        private void mnuAfsluiten_Click(object sender, RoutedEventArgs e)
+        private void MnuAfsluiten_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void mnuDashboard_Click(object sender, RoutedEventArgs e)
+        private void MnuDashboard_Click(object sender, RoutedEventArgs e)
         {
             NavigeerNaarDashboard();
         }
 
-        private void mnuBedrijvenBeheer_Click(object sender, RoutedEventArgs e)
+        private void MnuBedrijvenBeheer_Click(object sender, RoutedEventArgs e)
         {
             NavigeerNaarBedrijvenBeheer();
         }
 
-        private void mnuRegistratieBeheer_Click(object sender, RoutedEventArgs e)
+        private void MnuRegistratieBeheer_Click(object sender, RoutedEventArgs e)
         {
             NavigeerNaarRegistratieBeheer();
         }

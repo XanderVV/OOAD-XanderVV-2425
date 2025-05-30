@@ -1,6 +1,0 @@
----
-description: 
-globs: 
-alwaysApply: true
----
-Gebruik uitsluitend Frame/Page voor navigatie. Maak gebruik van "07. WPF Controls" @https://rogiervdl.github.io/CS-course/07_wpfcontrols.html voor de juiste implementatie van WPF controls.

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using Microsoft.Data.SqlClient;
 using BenchmarkTool.ClassLibrary.Models;
+using Microsoft.Data.SqlClient;
 
 namespace BenchmarkTool.ClassLibrary.Data
 {
@@ -11,7 +10,12 @@ namespace BenchmarkTool.ClassLibrary.Data
     /// </summary>
     public class DatabaseRepository
     {
-        protected readonly DatabaseHelper _dbHelper;
+        private readonly DatabaseHelper _dbHelper;
+
+        /// <summary>
+        /// Beschermde eigenschap om toegang te krijgen tot de database helper
+        /// </summary>
+        protected DatabaseHelper DbHelper => _dbHelper;
 
         /// <summary>
         /// Constructor met standaard DatabaseHelper
@@ -39,21 +43,27 @@ namespace BenchmarkTool.ClassLibrary.Data
         /// <param name="tableName">Naam van de tabel</param>
         /// <param name="idColumnName">Naam van de ID-kolom</param>
         /// <param name="id">ID-waarde</param>
-        /// <param name="map">Mapping functie om een DataRow naar T te converteren</param>
+        /// <param name="map">Mapping functie om een SqlDataReader naar T te converteren</param>
         /// <returns>Het opgehaalde object of null als geen rij werd gevonden</returns>
-        protected T GetById<T>(string tableName, string idColumnName, object id, Func<DataRow, T> map) where T : class
+        protected T GetById<T>(string tableName, string idColumnName, object id, Func<SqlDataReader, T> map) 
+            where T : class
         {
             string query = $"SELECT * FROM {tableName} WHERE {idColumnName} = @Id";
             SqlParameter parameter = new SqlParameter("@Id", id);
 
-            DataTable result = _dbHelper.ExecuteDataTable(query, parameter);
+            T result = default;
+            DbHelper.ExecuteReader(
+                query, 
+                delegate(SqlDataReader reader) 
+                {
+                    if (reader.Read())
+                    {
+                        result = map(reader);
+                    }
+                }, 
+                parameter);
 
-            if (result.Rows.Count == 0)
-            {
-                return null;
-            }
-
-            return map(result.Rows[0]);
+            return result;
         }
 
         /// <summary>
@@ -61,12 +71,12 @@ namespace BenchmarkTool.ClassLibrary.Data
         /// </summary>
         /// <typeparam name="T">Type van de objecten die moeten worden opgehaald</typeparam>
         /// <param name="tableName">Naam van de tabel</param>
-        /// <param name="map">Mapping functie om een DataRow naar T te converteren</param>
+        /// <param name="map">Mapping functie om een SqlDataReader naar T te converteren</param>
         /// <returns>Lijst van opgehaalde objecten</returns>
-        protected List<T> GetAll<T>(string tableName, Func<DataRow, T> map)
+        protected List<T> GetAll<T>(string tableName, Func<SqlDataReader, T> map)
         {
             string query = $"SELECT * FROM {tableName}";
-            return _dbHelper.ExecuteList(query, map);
+            return DbHelper.ExecuteList(query, map);
         }
 
         /// <summary>
@@ -81,7 +91,7 @@ namespace BenchmarkTool.ClassLibrary.Data
             string query = $"DELETE FROM {tableName} WHERE {idColumnName} = @Id";
             SqlParameter parameter = new SqlParameter("@Id", id);
 
-            int rowsAffected = _dbHelper.ExecuteNonQuery(query, parameter);
+            int rowsAffected = DbHelper.ExecuteNonQuery(query, parameter);
             return rowsAffected > 0;
         }
 
@@ -146,13 +156,13 @@ namespace BenchmarkTool.ClassLibrary.Data
         /// <returns>Lijst met alle NACE-codes</returns>
         public virtual List<Nacecode> GetAllNacecodes()
         {
-            return GetAll("Nacecodes", row => new Nacecode
+            return GetAll("Nacecodes", reader => new Nacecode
             {
-                Code = ConvertFromDBValue<string>(row["code"]),
-                Text = ConvertFromDBValue<string>(row["text"]),
-                TextFr = ConvertFromDBValue<string>(row["textFr"]),
-                TextEn = ConvertFromDBValue<string>(row["textEn"]),
-                ParentCode = ConvertFromDBValue<string>(row["parent_code"])
+                Code = ConvertFromDBValue<string>(reader["code"]),
+                Text = ConvertFromDBValue<string>(reader["text"]),
+                TextFr = ConvertFromDBValue<string>(reader["textFr"]),
+                TextEn = ConvertFromDBValue<string>(reader["textEn"]),
+                ParentCode = ConvertFromDBValue<string>(reader["parent_code"])
             });
         }
 
@@ -162,17 +172,17 @@ namespace BenchmarkTool.ClassLibrary.Data
         /// <returns>Lijst met alle categorieën</returns>
         public virtual List<Categorie> GetAllCategories()
         {
-            return GetAll("Categories", row => new Categorie
+            return GetAll("Categories", reader => new Categorie
             {
-                Nr = ConvertFromDBValue<int>(row["nr"]),
-                Text = ConvertFromDBValue<string>(row["text"]),
-                TextFr = ConvertFromDBValue<string>(row["textFr"]),
-                TextEn = ConvertFromDBValue<string>(row["textEn"]),
-                Tooltip = ConvertFromDBValue<string>(row["tooltip"]),
-                TooltipFr = ConvertFromDBValue<string>(row["tooltipFr"]),
-                TooltipEn = ConvertFromDBValue<string>(row["tooltipEn"]),
-                RelevantCostTypes = ConvertFromDBValue<string>(row["relevantCostTypes"]),
-                ParentNr = ConvertFromDBValue<int?>(row["parent_nr"])
+                Nr = ConvertFromDBValue<int>(reader["nr"]),
+                Text = ConvertFromDBValue<string>(reader["text"]),
+                TextFr = ConvertFromDBValue<string>(reader["textFr"]),
+                TextEn = ConvertFromDBValue<string>(reader["textEn"]),
+                Tooltip = ConvertFromDBValue<string>(reader["tooltip"]),
+                TooltipFr = ConvertFromDBValue<string>(reader["tooltipFr"]),
+                TooltipEn = ConvertFromDBValue<string>(reader["tooltipEn"]),
+                RelevantCostTypes = ConvertFromDBValue<string>(reader["relevantCostTypes"]),
+                ParentNr = ConvertFromDBValue<int?>(reader["parent_nr"])
             });
         }
 
@@ -182,21 +192,21 @@ namespace BenchmarkTool.ClassLibrary.Data
         /// <returns>Lijst met alle vragen</returns>
         public virtual List<Vraag> GetAllQuestions()
         {
-            return GetAll("Questions", row => new Vraag
+            return GetAll("Questions", reader => new Vraag
             {
-                Id = ConvertFromDBValue<int>(row["id"]),
-                Text = ConvertFromDBValue<string>(row["text"]),
-                TextFr = ConvertFromDBValue<string>(row["textFr"]),
-                TextEn = ConvertFromDBValue<string>(row["textEn"]),
-                Tooltip = ConvertFromDBValue<string>(row["tooltip"]),
-                TooltipFr = ConvertFromDBValue<string>(row["tooltipFr"]),
-                TooltipEn = ConvertFromDBValue<string>(row["tooltipEn"]),
-                Type = ConvertFromDBValue<string>(row["type"]),
-                Values = ConvertFromDBValue<string>(row["values"]),
-                ValuesFr = ConvertFromDBValue<string>(row["valuesFr"]),
-                ValuesEn = ConvertFromDBValue<string>(row["valuesEn"]),
-                MaxValue = ConvertFromDBValue<decimal?>(row["maxvalue"]),
-                CategoryNr = ConvertFromDBValue<int>(row["category_nr"])
+                Id = ConvertFromDBValue<int>(reader["id"]),
+                Text = ConvertFromDBValue<string>(reader["text"]),
+                TextFr = ConvertFromDBValue<string>(reader["textFr"]),
+                TextEn = ConvertFromDBValue<string>(reader["textEn"]),
+                Tooltip = ConvertFromDBValue<string>(reader["tooltip"]),
+                TooltipFr = ConvertFromDBValue<string>(reader["tooltipFr"]),
+                TooltipEn = ConvertFromDBValue<string>(reader["tooltipEn"]),
+                Type = ConvertFromDBValue<string>(reader["type"]),
+                Values = ConvertFromDBValue<string>(reader["values"]),
+                ValuesFr = ConvertFromDBValue<string>(reader["valuesFr"]),
+                ValuesEn = ConvertFromDBValue<string>(reader["valuesEn"]),
+                MaxValue = ConvertFromDBValue<decimal?>(reader["maxvalue"]),
+                CategoryNr = ConvertFromDBValue<int>(reader["category_nr"])
             });
         }
 
@@ -206,12 +216,12 @@ namespace BenchmarkTool.ClassLibrary.Data
         /// <returns>Lijst met alle kosttypes</returns>
         public virtual List<KostType> GetAllCosttypes()
         {
-            return GetAll("Costtypes", row => new KostType
+            return GetAll("Costtypes", reader => new KostType
             {
-                Type = ConvertFromDBValue<string>(row["type"]),
-                Text = ConvertFromDBValue<string>(row["text"]),
-                TextFr = ConvertFromDBValue<string>(row["textFr"]),
-                TextEn = ConvertFromDBValue<string>(row["textEn"])
+                Type = ConvertFromDBValue<string>(reader["type"]),
+                Text = ConvertFromDBValue<string>(reader["text"]),
+                TextFr = ConvertFromDBValue<string>(reader["textFr"]),
+                TextEn = ConvertFromDBValue<string>(reader["textEn"])
             });
         }
 

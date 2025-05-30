@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Data;
 using System.Windows;
 
 namespace BenchmarkTool.AdminApp
@@ -10,5 +9,4 @@ namespace BenchmarkTool.AdminApp
     public partial class App : Application
     {
     }
-
 }
